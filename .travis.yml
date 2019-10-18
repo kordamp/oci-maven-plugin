@@ -6,7 +6,7 @@ cache:
   - $HOME/.m2/
 
 before_script:
-  - ./mvn --version
+  - mvn --version
 
 script:
   - TERM=dumb mvn package -X
