@@ -9,4 +9,4 @@ before_script:
   - mvn --version
 
 script:
-  - TERM=dumb mvn package -X
+  - TERM=dumb mvn package
