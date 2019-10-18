@@ -1,0 +1,8 @@
+
+[[_introduction]]
+= Introduction
+
+A Maven plugin for the {link_oci_java_sdk}.
+
+Currently supported OCI Java SDK version is *`{oci-java-sdk-version}`*.
+
