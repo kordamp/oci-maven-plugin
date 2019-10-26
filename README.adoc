@@ -13,6 +13,8 @@ image:https://img.shields.io/badge/donations-Patreon-f96854.svg?logo=patreon[lin
 
 A Maven plugin for the link:https://github.com/oracle/oci-java-sdk[Java SDK for Oracle Cloud Infrastructure]
 
+WARNING:  This plugin is not endorsed by Oracle nor does the company provide any support for it.
+
 == Usage
 
 [source,xml]
