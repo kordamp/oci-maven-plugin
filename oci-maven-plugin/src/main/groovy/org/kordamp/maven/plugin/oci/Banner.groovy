@@ -1,0 +1,90 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2019 Andres Almiray.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.kordamp.maven.plugin.oci
+
+import groovy.transform.CompileStatic
+import org.apache.maven.plugin.logging.Log
+import org.apache.maven.project.MavenProject
+
+import java.text.MessageFormat
+
+/**
+ *
+ * @author Andres Almiray
+ * @since 0.2.0
+ */
+@CompileStatic
+final class Banner {
+    private final ResourceBundle bundle = ResourceBundle.getBundle(Banner.name)
+    private final String productVersion = bundle.getString('product.version')
+    private final String productId = bundle.getString('product.id')
+    private final String productName = bundle.getString('product.name')
+    private final String banner = MessageFormat.format(bundle.getString('product.banner'), productName, productVersion)
+    private final List<String> visited = []
+
+    private static final Banner b = new Banner()
+
+    private Banner() {
+        // nooop
+    }
+
+    static void display(MavenProject project, Log log) {
+        MavenProject element = project
+        MavenProject root = project
+        while (true) {
+            if (element.parent == null || element.parent == element) {
+                break
+            }
+            root = element.parent
+        }
+        if (b.visited.contains(root.name)) {
+            return
+        }
+        b.visited.add(root.name)
+
+        File parent = new File(System.getProperty('user.home'), '/.m2/caches')
+        File markerFile = b.getMarkerFile(parent)
+        if (!markerFile.exists()) {
+            markerFile.parentFile.mkdirs()
+            markerFile.text = '1'
+            log.warn(b.banner)
+        } else {
+            try {
+                int count = Integer.parseInt(markerFile.text)
+                if (count < 3) {
+                    log.warn(b.banner)
+                }
+                markerFile.text = (count + 1) + ''
+            } catch (NumberFormatException e) {
+                markerFile.text = '1'
+                log.warn(b.banner)
+            }
+        }
+    }
+
+    private File getMarkerFile(File parent) {
+        new File(parent,
+            'kordamp' +
+                File.separator +
+                productId +
+                File.separator +
+                productVersion +
+                File.separator +
+                'marker.txt')
+    }
+}

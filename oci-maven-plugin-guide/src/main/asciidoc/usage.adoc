@@ -373,13 +373,12 @@ NOTE: Either `vcnId` or `vcnName` must be specified.
 .addIngressSecurityRule
 [options="header", cols="5*<,^"]
 |===
-| Property       | Type   | System               | Environment          | Default | Required
-| port           | int    | oci.port             | OCI_PORT             |         | icon:check[role="green"]
-| portType       | String | oci.port.typ         | OCI_PORT_TYPE        | TCP     | icon:times[role="red"]
-| securityListId | String | oci.security.list.id | OCI_SECURITY_LIST_ID |         | icon:check[role="green"]
+| Property        | Type   | System               | Environment          | Default | Required
+| sourcePort      | int    |                      |                      |         | icon:check[role="green"]
+| destinationPort | int    |                      |                      |         | icon:check[role="green"]
+| portType        | String | oci.port.type        | OCI_PORT_TYPE        | TCP     | icon:times[role="red"]
+| securityListId  | String | oci.security.list.id | OCI_SECURITY_LIST_ID |         | icon:check[role="green"]
 |===
-
-NOTE: Multiple entries for `--port` may be defined.
 
 NOTE: Valid values for `portType` are: `TCP`, `UDP`.
 

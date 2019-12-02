@@ -32,7 +32,7 @@ class StringUtils {
      * method returns <code>false</code>.</p>
      *
      * @param str The string to test.
-     * @return <code>true</code> if the string is <code>null</code>, or
+     * @return <code> true</code> if the string is <code>null</code>, or
      * blank.
      */
     static boolean isBlank(String str) {
@@ -55,7 +55,7 @@ class StringUtils {
      * method returns <code>true</code>.</p>
      *
      * @param str The string to test.
-     * @return <code>true</code> if the string is not <code>null</code>, nor
+     * @return <code> true</code> if the string is not <code>null</code>, nor
      * blank.
      */
     static boolean isNotBlank(String str) {

@@ -4,7 +4,7 @@
 
     <groupId>org.kordamp.maven</groupId>
     <artifactId>oci-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>oci-maven-plugin</name>
@@ -39,8 +39,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.version>3.6.2</maven.version>
-        <oci.sdk.version>1.9.1</oci.sdk.version>
+        <oci.sdk.version>1.10.0</oci.sdk.version>
         <groovy.version>2.5.8</groovy.version>
+        <product.version>${project.version}</product.version>
+        <product.id>oci-maven</product.id>
+        <product.name>OCI Maven plugin</product.name>
     </properties>
 
     <dependencyManagement>
@@ -201,6 +204,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
