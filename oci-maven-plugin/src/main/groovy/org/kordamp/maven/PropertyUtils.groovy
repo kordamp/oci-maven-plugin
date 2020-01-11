@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2019 Andres Almiray.
+ * Copyright 2019-2020 Andres Almiray.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class PropertyUtils {
         return alternateValue
     }
 
-    static int integerProperty(String envKey, String propertyKey, int alternateValue) {
+    static Integer integerProperty(String envKey, String propertyKey, Integer alternateValue) {
         String value = System.getenv(envKey)
         if (isBlank(value)) value = System.getProperty(propertyKey)
         if (isNotBlank(value)) {
@@ -61,5 +61,9 @@ class PropertyUtils {
             return Paths.get(value).toFile()
         }
         return alternateValue
+    }
+
+    static File directoryProperty(String envKey, String propertyKey, File alternateValue) {
+        return fileProperty(envKey, propertyKey, alternateValue)
     }
 }

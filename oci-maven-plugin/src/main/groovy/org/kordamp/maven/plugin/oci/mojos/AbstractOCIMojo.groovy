@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2019 Andres Almiray.
+ * Copyright 2019-2020 Andres Almiray.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ import com.oracle.bmc.core.BlockstorageClient
 import com.oracle.bmc.core.ComputeClient
 import com.oracle.bmc.core.VirtualNetworkClient
 import com.oracle.bmc.identity.IdentityClient
+import com.oracle.bmc.objectstorage.ObjectStorageAsyncClient
+import com.oracle.bmc.objectstorage.ObjectStorageClient
 import com.oracle.bmc.resourcesearch.ResourceSearchClient
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Mojo
@@ -34,6 +36,8 @@ import org.apache.maven.plugins.annotations.Parameter
 import org.apache.maven.project.MavenProject
 import org.kordamp.maven.plugin.oci.Banner
 import org.kordamp.maven.plugin.oci.mojos.interfaces.OCIMojo
+
+import java.text.SimpleDateFormat
 
 import static org.kordamp.maven.PropertyUtils.fileProperty
 import static org.kordamp.maven.PropertyUtils.stringProperty
@@ -47,6 +51,7 @@ import static org.kordamp.maven.StringUtils.isNotBlank
 @CompileStatic
 abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo {
     protected static final String CONFIG_LOCATION = '~/.oci/config'
+    protected static final String TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
     protected final List<AutoCloseable> closeables = new ArrayList<>()
     private AuthenticationDetailsProvider authenticationDetailsProvider
@@ -163,6 +168,80 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
         authenticationDetailsProvider
     }
 
+    @Override
+    protected void doPrintMapEntry(String key, value, int offset) {
+        if (value instanceof CharSequence) {
+            if (isNotBlank((String.valueOf(value)))) {
+                super.doPrintMapEntry(key, value, offset)
+            }
+        } else {
+            super.doPrintMapEntry(key, value, offset)
+        }
+    }
+
+    @Override
+    void printKeyValue(String key, Object value, int offset) {
+        doPrintMapEntry(key, value, offset)
+    }
+
+    @Override
+    void printMap(String key, Map<String, ?> map, int offset) {
+        if (map && !map.isEmpty()) {
+            println(('    ' * offset) + key + ':')
+            doPrintMap(map, offset + 1)
+        }
+    }
+
+    @Override
+    void printCollection(String key, Collection<?> collection, int offset) {
+        if (collection && !collection.isEmpty()) {
+            println(('    ' * offset) + key + ':')
+            doPrintCollection(collection, offset + 1)
+        }
+    }
+
+    @Override
+    String state(String state) {
+        if (isNotBlank(state)) {
+            switch (state) {
+                case 'Creating':
+                case 'Provisioning':
+                case 'Restoring':
+                case 'Importing':
+                case 'Exporting':
+                case 'Starting':
+                case 'CreatingImage':
+                    return console.yellow(state)
+                case 'Available':
+                case 'Running':
+                case 'Active':
+                    return console.green(state)
+                case 'Inactive':
+                case 'Stopping':
+                case 'Stopped':
+                    return console.cyan(state)
+                case 'Disabled':
+                case 'Deleting':
+                case 'Deleted':
+                case 'Terminating':
+                case 'Terminated':
+                case 'Faulty':
+                case 'Failed':
+                    return console.red(state)
+            }
+        }
+        state
+    }
+
+    static String format(Date date) {
+        return new SimpleDateFormat(TIMESTAMP_FORMAT).format(date)
+    }
+
+    @Override
+    String getPath() {
+        ':' + getClass().getDeclaredAnnotation(Mojo)?.name()
+    }
+
     protected IdentityClient createIdentityClient() {
         IdentityClient client = new IdentityClient(resolveAuthenticationDetailsProvider())
         if (isNotBlank(getRegion())) {
@@ -208,73 +287,21 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
         client
     }
 
-    @Override
-    protected void doPrintMapEntry(String key, value, int offset) {
-        if (value instanceof CharSequence) {
-            if (isNotBlank((String.valueOf(value)))) {
-                super.doPrintMapEntry(key, value, offset)
-            }
-        } else {
-            super.doPrintMapEntry(key, value, offset)
+    protected ObjectStorageClient createObjectStorageClient() {
+        ObjectStorageClient client = new ObjectStorageClient(resolveAuthenticationDetailsProvider())
+        if (isNotBlank(getRegion())) {
+            client.setRegion(getRegion())
         }
+        closeables << client
+        client
     }
 
-    @Override
-    void printKeyValue(String key, Object value, int offset) {
-        doPrintMapEntry(key, value, offset)
-    }
-
-    @Override
-    void printMap(String key, Map<String, ?> map, int offset) {
-        if (!map.isEmpty()) {
-            println(('    ' * offset) + key + ':')
-            doPrintMap(map, offset + 1)
+    protected ObjectStorageAsyncClient createObjectStorageAsyncClient() {
+        ObjectStorageAsyncClient client = new ObjectStorageAsyncClient(resolveAuthenticationDetailsProvider())
+        if (isNotBlank(getRegion())) {
+            client.setRegion(getRegion())
         }
-    }
-
-    @Override
-    void printCollection(String key, Collection<?> collection, int offset) {
-        if (!collection.isEmpty()) {
-            println(('    ' * offset) + key + ':')
-            doPrintCollection(collection, offset + 1)
-        }
-    }
-
-    @Override
-    String state(String state) {
-        if (isNotBlank(state)) {
-            switch (state) {
-                case 'Creating':
-                case 'Provisioning':
-                case 'Restoring':
-                case 'Importing':
-                case 'Exporting':
-                case 'Starting':
-                case 'CreatingImage':
-                    return console.yellow(state)
-                case 'Available':
-                case 'Running':
-                case 'Active':
-                    return console.green(state)
-                case 'Inactive':
-                case 'Stopping':
-                case 'Stopped':
-                    return console.cyan(state)
-                case 'Disabled':
-                case 'Deleting':
-                case 'Deleted':
-                case 'Terminating':
-                case 'Terminated':
-                case 'Faulty':
-                case 'Failed':
-                    return console.red(state)
-            }
-        }
-        state
-    }
-
-    @Override
-    String getPath() {
-        ':' + getClass().getDeclaredAnnotation(Mojo)?.name()
+        closeables << client
+        client
     }
 }

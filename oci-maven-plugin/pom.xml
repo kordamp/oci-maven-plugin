@@ -39,7 +39,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.version>3.6.2</maven.version>
-        <oci.sdk.version>1.10.0</oci.sdk.version>
+        <oci.sdk.version>1.12.1</oci.sdk.version>
         <groovy.version>2.5.8</groovy.version>
         <product.version>${project.version}</product.version>
         <product.id>oci-maven</product.id>

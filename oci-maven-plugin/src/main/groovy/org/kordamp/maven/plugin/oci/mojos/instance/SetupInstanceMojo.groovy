@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2019 Andres Almiray.
+ * Copyright 2019-2020 Andres Almiray.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,8 +60,12 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
     PublicKeyFileAwareTrait,
     UserDataFileAwareTrait,
     VerboseAwareTrait {
-    String createdInstanceId
-    File output
+    private String createdInstanceId
+    private File output
+
+    String getCreatedInstanceId() {
+        this.@createdInstanceId
+    }
 
     File getOutput() {
         if (!this.@output) {
@@ -162,7 +166,7 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
             userDataFile,
             kmsKeyId,
             true)
-        setCreatedInstanceId(instance.id)
+        createdInstanceId = instance.id
         props.put('instance.id', instance.id)
         props.put('instance.name', instance.displayName)
 

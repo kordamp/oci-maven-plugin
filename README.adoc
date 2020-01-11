@@ -1,13 +1,16 @@
 = oci-maven-plugin
 :linkattrs:
-:project-group: org.kordamp.maven
-:project-name: oci-maven-plugin
+:project-owner:   kordamp
+:project-repo:    maven
+:project-name:    kordamp-parentpom
+:project-name:    oci-maven-plugin
+:project-group:   org.kordamp.gradle
 :project-version: 0.1.0
 
-image:https://img.shields.io/travis/aalmiray/{project-name}/master.svg?logo=travis["Build Status", link="https://travis-ci.org/aalmiray/{project-name}"]
-image:https://img.shields.io/badge/license-ASF2-blue.svg?logo=apache["Apache License 2", link="http://www.apache.org/licenses/LICENSE-2.0.txt"]
-image:https://api.bintray.com/packages/aalmiray/kordamp/{project-name}/images/download.svg[link="https://bintray.com/aalmiray/kordamp/{project-name}/_latestVersion"]
-image:https://img.shields.io/badge/donations-Patreon-f96854.svg?logo=patreon[link="https://www.patreon.com/user?u=6609318"]
+image:http://img.shields.io/travis/{project-owner}/{project-name}/master.svg["Build Status (travis)", link="https://travis-ci.org/{project-owner}/{project-name}"]
+image:http://img.shields.io/badge/license-ASL2-blue.svg["ASL2 Licensed", link="http://opensource.org/licenses/ASL2"]
+image:https://api.bintray.com/packages/{project-owner}/{project-repo}/{project-name}/images/download.svg[link="https://bintray.com/{project-owner}/{project-repo}/{project-name}/_latestVersion"]
+image:https://img.shields.io/badge/donations-Patreon-orange.svg[link="https://www.patreon.com/user?u=6609318"]
 
 ---
 
@@ -23,13 +26,13 @@ WARNING:  This plugin is not endorsed by Oracle nor does the company provide any
 <plugins>
     <plugin>
         <groupId>{project-group}</groupId>
-        <artifactId>oci-maven-plugin</artifactId>
+        <artifactId>{project-name}</artifactId>
         <version>{project-version}</version>
     </plugin>
 </plugins>
 ----
 
-Refer to the link:http://aalmiray.github.io/{project-name}[guide, window="_blank"] for further information on configuration
+Refer to the link:http://{project-owner}.github.io/{project-name}[guide, window="_blank"] for further information on configuration
 and usage.
 
 == Requirements
