@@ -40,7 +40,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.version>3.6.2</maven.version>
         <oci.sdk.version>1.13.2</oci.sdk.version>
-        <groovy.version>2.5.8</groovy.version>
+        <groovy.version>2.5.10</groovy.version>
         <product.version>${project.version}</product.version>
         <product.id>oci-maven</product.id>
         <product.name>OCI Maven plugin</product.name>
@@ -309,7 +309,7 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.8.0</version>
+                <version>1.8.1</version>
                 <executions>
                     <execution>
                         <id>compile-groovy</id>

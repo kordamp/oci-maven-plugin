@@ -36,13 +36,9 @@ trait DnsLabelAwareTrait implements PathAware, LogAware {
     String dnsLabel
 
     void setDnsLabel(String dnsLabel) {
-        this.@dnsLabel = normalizeDnsLabel(dnsLabel)
-    }
-
-    private String normalizeDnsLabel(String dnsLabel) {
         String label = dnsLabel?.replace('.', '')?.replace('-', '')
         if (label?.length() > 15) label = label?.substring(0, 14)
-        label
+        this.@dnsLabel = label
     }
 
     String getDnsLabel() {
