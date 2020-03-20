@@ -157,6 +157,7 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
             computeClient,
             vcnClient,
             blockstorageClient,
+            identityClient,
             getCompartmentId(),
             getInstanceName(),
             _image,
