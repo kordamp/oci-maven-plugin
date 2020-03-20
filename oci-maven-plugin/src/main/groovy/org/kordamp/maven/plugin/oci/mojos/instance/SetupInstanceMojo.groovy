@@ -38,7 +38,7 @@ import org.kordamp.maven.plugin.oci.mojos.traits.ImageAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.InstanceNameAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.PublicKeyFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.ShapeAwareTrait
-import org.kordamp.maven.plugin.oci.mojos.traits.UserDataFileAwareTrait
+import org.kordamp.maven.plugin.oci.mojos.traits.OptionalUserDataFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.VerboseAwareTrait
 
 import static org.kordamp.maven.plugin.oci.mojos.create.CreateInstanceMojo.maybeCreateInstance
@@ -58,7 +58,7 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
     ImageAwareTrait,
     ShapeAwareTrait,
     PublicKeyFileAwareTrait,
-    UserDataFileAwareTrait,
+    OptionalUserDataFileAwareTrait,
     VerboseAwareTrait {
     private String createdInstanceId
     private File output

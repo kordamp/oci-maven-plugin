@@ -55,7 +55,7 @@ import org.kordamp.maven.plugin.oci.mojos.traits.InstanceNameAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.PublicKeyFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.ShapeAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.SubnetIdAwareTrait
-import org.kordamp.maven.plugin.oci.mojos.traits.UserDataFileAwareTrait
+import org.kordamp.maven.plugin.oci.mojos.traits.OptionalUserDataFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.VerboseAwareTrait
 
 import static CreateInstanceConsoleConnectionMojo.maybeCreateInstanceConsoleConnection
@@ -76,7 +76,7 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
     ImageAwareTrait,
     ShapeAwareTrait,
     PublicKeyFileAwareTrait,
-    UserDataFileAwareTrait,
+    OptionalUserDataFileAwareTrait,
     VerboseAwareTrait {
     String createdInstanceId
 
@@ -228,7 +228,7 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
         }
 
         Map<String, String> metadata = new HashMap<>('ssh_authorized_keys': publicKeyFile.text)
-        if (userDataFile && userDataFile.exists() && isNotBlank(userDataFile.text)) {
+        if (userDataFile && userDataFile?.exists() && isNotBlank(userDataFile?.text)) {
             metadata.put("user_data", Base64.encodeBase64String(userDataFile.getBytes()))
         }
 

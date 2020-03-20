@@ -28,17 +28,11 @@ import static org.kordamp.maven.PropertyUtils.fileProperty
  * @since 0.1.0
  */
 @CompileStatic
-trait UserDataFileAwareTrait implements PathAware {
+trait OptionalUserDataFileAwareTrait implements PathAware {
     @Parameter(property = 'oci.user.data.file', name = 'userDataFile')
     File userDataFile
 
     File getUserDataFile() {
         fileProperty('OCI_USER_DATA_FILE', 'oci.user.data.file', this.@userDataFile)
-    }
-
-    void validateUserDataFile() {
-        if (!userDataFile) {
-            throw new IllegalStateException("Missing value for 'userDataFile' in $path")
-        }
     }
 }
