@@ -36,11 +36,13 @@ import org.kordamp.maven.plugin.oci.mojos.AbstractOCIMojo
 import org.kordamp.maven.plugin.oci.mojos.traits.CompartmentIdAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.ImageAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.InstanceNameAwareTrait
+import org.kordamp.maven.plugin.oci.mojos.traits.OptionalDnsLabelAwareTrait
+import org.kordamp.maven.plugin.oci.mojos.traits.OptionalUserDataFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.PublicKeyFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.ShapeAwareTrait
-import org.kordamp.maven.plugin.oci.mojos.traits.OptionalUserDataFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.VerboseAwareTrait
 
+import static org.kordamp.maven.StringUtils.isNotBlank
 import static org.kordamp.maven.plugin.oci.mojos.create.CreateInstanceMojo.maybeCreateInstance
 import static org.kordamp.maven.plugin.oci.mojos.create.CreateInternetGatewayMojo.maybeCreateInternetGateway
 import static org.kordamp.maven.plugin.oci.mojos.create.CreateSubnetMojo.maybeCreateSubnet
@@ -59,6 +61,7 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
     ShapeAwareTrait,
     PublicKeyFileAwareTrait,
     OptionalUserDataFileAwareTrait,
+    OptionalDnsLabelAwareTrait,
     VerboseAwareTrait {
     private String createdInstanceId
     private File output
@@ -95,7 +98,7 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
         File publicKeyFile = getPublicKeyFile()
         File userDataFile = getUserDataFile()
         String vcnDisplayName = getInstanceName() + '-vcn'
-        String dnsLabel = getInstanceName()
+        String dnsLabel = normalizeDnsLabel(isNotBlank(getDnsLabel()) ? getDnsLabel() : getInstanceName())
         String internetGatewayDisplayName = getInstanceName() + '-internet-gateway'
         String kmsKeyId = ''
 
@@ -185,5 +188,11 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
 
         props.store(new FileWriter(getOutput()), '')
         println("Result stored at ${console.yellow(getOutput().absolutePath)}")
+    }
+
+    private String normalizeDnsLabel(String dnsLabel) {
+        String label = dnsLabel?.replace('.', '')?.replace('-', '')
+        if (label?.length() > 15) label = HashUtil.sha1(dnsLabel.bytes).asHexString()[0..14]
+        label
     }
 }

@@ -155,7 +155,8 @@ Environment > System System > Property
 | publicKeyFile     | File    | oci.public.key.file     | OCI_PUBLIC_KEY_FILE     |         | icon:check[role="green"]
 | shape             | String  | oci.shape               | OCI_SHAPE               |         | icon:check[role="green"]
 | subnetId          | String  | oci.subnet.id           | OCI_SUBNET_ID           |         | icon:check[role="green"]
-| userDataFile      | File    | oci.user.data.file      | OCI_USER_DATA_FILE      |         | icon:check[role="green"]
+| dnsLabel          | String  | oci.dns.label           | OCI_DNS_LABEL           |         | icon:times[role="red"]
+| userDataFile      | File    | oci.user.data.file      | OCI_USER_DATA_FILE      |         | icon:times[role="red"]
 | verbose           | boolean | oci.verbose             | OCI_VERBOSE             | false   | icon:times[role="red"]
 | waitForCompletion | boolean | oci.wait.for.completion | OCI_WAIT_FOR_COMPLETION | false   | icon:times[role="red"]
 |===
