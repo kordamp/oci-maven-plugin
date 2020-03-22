@@ -498,10 +498,11 @@ NOTE: Valid values for `action` are: `RESET`, `SOFTRESET`, `SOFTSTOP`, `START`, 
 | compartmentId     | String  | oci.compartment.id      | OCI_COMPARTMENT_ID      |         | icon:check[role="green"]
 | instanceId        | String  | oci.instance.id         | OCI_INSTANCE_ID         |         | icon:check[role="green"]*
 | instanceName      | String  | oci.instance.name       | OCI_INSTANCE_NAME       |         | icon:check[role="green"]*
+| regex             | boolean | oci.regex               | OCI_REGEX               | false   | icon:times[role="red"]
 | waitForCompletion | boolean | oci.wait.for.completion | OCI_WAIT_FOR_COMPLETION | false   | icon:times[role="red"]
 |===
 
-NOTE: Either `instanceId` or `instanceName` must be specified.
+NOTE: Either `instanceId` or `instanceName` must be specified. If `regex` is true then `instanceName` is treated as a regular expression.
 
 <<_oci_instance_,icon:arrow-up[] top>>
 

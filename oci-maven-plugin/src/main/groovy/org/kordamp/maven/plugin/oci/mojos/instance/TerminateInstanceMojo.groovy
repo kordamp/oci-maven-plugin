@@ -28,6 +28,7 @@ import org.kordamp.maven.plugin.oci.mojos.AbstractOCIMojo
 import org.kordamp.maven.plugin.oci.mojos.traits.CompartmentIdAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.OptionalInstanceIdAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.OptionalInstanceNameAwareTrait
+import org.kordamp.maven.plugin.oci.mojos.traits.RegexAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.WaitForCompletionAwareTrait
 
 import static org.kordamp.maven.StringUtils.isBlank
@@ -42,6 +43,7 @@ import static org.kordamp.maven.StringUtils.isNotBlank
 class TerminateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait,
     OptionalInstanceIdAwareTrait,
     OptionalInstanceNameAwareTrait,
+    RegexAwareTrait,
     WaitForCompletionAwareTrait {
     @Override
     protected void executeGoal() {
@@ -69,13 +71,26 @@ class TerminateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwar
         } else {
             validateCompartmentId()
 
-            client.listInstances(ListInstancesRequest.builder()
-                .compartmentId(compartmentId)
-                .displayName(getInstanceName())
-                .build())
-                .items.each { instance ->
-                setInstanceId(instance.id)
-                terminateInstance(client, instance)
+            if (isRegex()) {
+                client.listInstances(ListInstancesRequest.builder()
+                    .compartmentId(getCompartmentId())
+                    .displayName(getInstanceName())
+                    .build())
+                    .items.each { instance ->
+                    setInstanceId(instance.id)
+                    terminateInstance(client, instance)
+                }
+            } else {
+                final String instanceNameRegex = getInstanceName()
+                client.listInstances(ListInstancesRequest.builder()
+                    .compartmentId(getCompartmentId())
+                    .build())
+                    .items.each { instance ->
+                    if (instance.displayName.matches(instanceNameRegex)) {
+                        setInstanceId(instance.id)
+                        terminateInstance(client, instance)
+                    }
+                }
             }
         }
     }

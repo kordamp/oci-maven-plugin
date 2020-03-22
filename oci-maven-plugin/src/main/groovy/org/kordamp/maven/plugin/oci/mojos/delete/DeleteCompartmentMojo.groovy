@@ -45,22 +45,23 @@ class DeleteCompartmentMojo extends AbstractOCIMojo implements CompartmentIdAwar
         // TODO: check is compartment is in a 'deletable' state
         // TODO: check if compartment is empty
 
+        String resolvedCompartmentId = getCompartmentId()
         Compartment compartment = client.getCompartment(GetCompartmentRequest.builder()
-            .compartmentId(compartmentId)
+            .compartmentId(resolvedCompartmentId)
             .build())
             .compartment
 
-        println("Deleting Compartment ${compartment.name} with id ${getCompartmentId()}")
+        println("Deleting Compartment ${compartment.name} with id ${resolvedCompartmentId}")
 
         client.deleteCompartment(DeleteCompartmentRequest.builder()
-            .compartmentId(compartmentId)
+            .compartmentId(resolvedCompartmentId)
             .build())
 
         if (isWaitForCompletion()) {
             println("Waiting for Compartment to be ${state('Deleted')}")
             client.waiters
                 .forCompartment(GetCompartmentRequest.builder()
-                    .compartmentId(compartmentId)
+                    .compartmentId(resolvedCompartmentId)
                     .build(),
                     Compartment.LifecycleState.Deleted)
                 .execute()
