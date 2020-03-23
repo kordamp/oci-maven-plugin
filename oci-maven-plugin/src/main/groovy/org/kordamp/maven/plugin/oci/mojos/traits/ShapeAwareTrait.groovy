@@ -23,6 +23,7 @@ import com.oracle.bmc.core.requests.ListShapesRequest
 import com.oracle.bmc.core.responses.ListShapesResponse
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.stringProperty
@@ -33,12 +34,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait ShapeAwareTrait implements PathAware {
+trait ShapeAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.shape', name = 'shape')
     private String shape
 
     String getShape() {
-        stringProperty('OCI_SHAPE', 'oci.shape', this.@shape)
+        stringProperty(this, 'OCI_SHAPE', 'oci.shape', this.@shape)
     }
 
     void validateShape() {

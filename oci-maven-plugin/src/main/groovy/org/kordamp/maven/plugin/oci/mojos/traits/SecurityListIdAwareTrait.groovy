@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static com.oracle.bmc.OCID.isValid
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait SecurityListIdAwareTrait implements PathAware {
+trait SecurityListIdAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.security.list.id', name = 'securityListId')
     String securityListId
 
     String getSecurityListId() {
-        stringProperty('OCI_SECURITY_LIST_ID', 'oci.security.list.id', this.@securityListId)
+        stringProperty(this, 'OCI_SECURITY_LIST_ID', 'oci.security.list.id', this.@securityListId)
     }
 
     void validateSecurityListId() {

@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.fileProperty
@@ -28,12 +29,12 @@ import static org.kordamp.maven.PropertyUtils.fileProperty
  * @since 0.2.0
  */
 @CompileStatic
-trait FileAwareTrait implements PathAware {
+trait FileAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.file', name = 'file')
     File file
 
     File getFile() {
-        fileProperty('OCI_FILE', 'oci.file', this.@file)
+        fileProperty(this, 'OCI_FILE', 'oci.file', this.@file)
     }
 
     void validateFile() {

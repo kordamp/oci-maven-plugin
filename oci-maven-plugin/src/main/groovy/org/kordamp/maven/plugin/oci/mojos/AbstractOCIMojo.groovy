@@ -81,31 +81,31 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
     private File keyfile
 
     String getProfile() {
-        stringProperty('OCI_PROFILE', 'oci.profile', this.@profile)
+        stringProperty(this, 'OCI_PROFILE', 'oci.profile', this.@profile)
     }
 
     String getRegion() {
-        stringProperty('OCI_REGION', 'oci.region', this.@region)
+        stringProperty(this, 'OCI_REGION', 'oci.region', this.@region)
     }
 
     String getUserId() {
-        stringProperty('OCIT_USERID', 'oci.userId', this.@userId)
+        stringProperty(this, 'OCIT_USERID', 'oci.userId', this.@userId)
     }
 
     String getTenantId() {
-        stringProperty('OCI_TENANTID', 'oci.tenantId', this.@tenantId)
+        stringProperty(this, 'OCI_TENANTID', 'oci.tenantId', this.@tenantId)
     }
 
     String getFingerprint() {
-        stringProperty('OCI_FINGERPRINT', 'oci.fingerprint', this.@fingerprint)
+        stringProperty(this, 'OCI_FINGERPRINT', 'oci.fingerprint', this.@fingerprint)
     }
 
     String getPassphrase() {
-        stringProperty('OCI_PASSPHRASE', 'oci.passphrase', this.@passphrase)
+        stringProperty(this, 'OCI_PASSPHRASE', 'oci.passphrase', this.@passphrase)
     }
 
     File getKeyfile() {
-        fileProperty('OCI_KEYFILE', 'oci.keyfile', this.@keyfile)
+        fileProperty(this, 'OCI_KEYFILE', 'oci.keyfile', this.@keyfile)
     }
 
     final void execute() {

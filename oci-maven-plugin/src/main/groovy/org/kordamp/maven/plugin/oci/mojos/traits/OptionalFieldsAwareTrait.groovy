@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -29,11 +30,11 @@ import static org.kordamp.maven.PropertyUtils.stringProperty
  * @since 0.2.0
  */
 @CompileStatic
-trait OptionalFieldsAwareTrait implements PathAware, LogAware {
+trait OptionalFieldsAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.fields', name = 'fields')
     String fields
 
     String getFields() {
-        stringProperty('OCI_FIELDS', 'oci.dns.label', this.@fields)
+        stringProperty(this, 'OCI_FIELDS', 'oci.dns.label', this.@fields)
     }
 }

@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.fileProperty
@@ -28,12 +29,12 @@ import static org.kordamp.maven.PropertyUtils.fileProperty
  * @since 0.1.0
  */
 @CompileStatic
-trait PublicKeyFileAwareTrait implements PathAware {
+trait PublicKeyFileAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.public.key.file', name = 'publicKeyFile')
     private File publicKeyFile
 
     File getPublicKeyFile() {
-        fileProperty('OCI_PUBLIC_KEY_FILE', 'oci.public.key.file', this.@publicKeyFile)
+        fileProperty(this, 'OCI_PUBLIC_KEY_FILE', 'oci.public.key.file', this.@publicKeyFile)
     }
 
     void validatePublicKeyFile() {

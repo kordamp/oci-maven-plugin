@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait OptionalVcnNameAwareTrait implements PathAware, LogAware {
+trait OptionalVcnNameAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.vcn.name', name = 'vcnName')
     String vcnName
 
     String getVcnName() {
-        stringProperty('OCI_VCN_NAME', 'oci.vcn.name', this.@vcnName)
+        stringProperty(this, 'OCI_VCN_NAME', 'oci.vcn.name', this.@vcnName)
     }
 
     void validateVcnName() {

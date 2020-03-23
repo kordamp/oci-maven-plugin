@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -29,11 +30,11 @@ import static org.kordamp.maven.PropertyUtils.stringProperty
  * @since 0.2.0
  */
 @CompileStatic
-trait OptionalPrefixAwareTrait implements PathAware, LogAware {
+trait OptionalPrefixAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.prefix', name = 'prefix')
     String prefix
 
     String getPrefix() {
-        stringProperty('OCI_PREFIX', 'oci.prefix', this.@prefix)
+        stringProperty(this, 'OCI_PREFIX', 'oci.prefix', this.@prefix)
     }
 }

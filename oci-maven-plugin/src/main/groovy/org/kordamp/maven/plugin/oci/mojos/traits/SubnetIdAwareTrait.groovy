@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static com.oracle.bmc.OCID.isValid
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait SubnetIdAwareTrait implements PathAware {
+trait SubnetIdAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.subnet.id', name = 'subnetId')
     String subnetId
 
     String getSubnetId() {
-        stringProperty('OCI_SUBNET_ID', 'oci.subnet.id', this.@subnetId)
+        stringProperty(this, 'OCI_SUBNET_ID', 'oci.subnet.id', this.@subnetId)
     }
 
     void validateSubnetId() {

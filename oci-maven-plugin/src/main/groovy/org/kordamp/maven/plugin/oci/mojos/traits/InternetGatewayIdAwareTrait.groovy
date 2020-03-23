@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static com.oracle.bmc.OCID.isValid
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait InternetGatewayIdAwareTrait implements PathAware {
+trait InternetGatewayIdAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.internet.gateway.id', name = 'internetGatewayId')
     String internetGatewayId
 
     String getInternetGatewayId() {
-        stringProperty('OCI_INTERNET_GATEWAY_ID', 'oci.internet.gateway.id', this.@internetGatewayId)
+        stringProperty(this, 'OCI_INTERNET_GATEWAY_ID', 'oci.internet.gateway.id', this.@internetGatewayId)
     }
 
     void validateInternetGatewayId() {

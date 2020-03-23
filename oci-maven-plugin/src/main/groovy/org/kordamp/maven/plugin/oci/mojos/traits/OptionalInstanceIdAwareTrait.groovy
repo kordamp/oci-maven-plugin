@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static com.oracle.bmc.OCID.isValid
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isNotBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait OptionalInstanceIdAwareTrait implements PathAware {
+trait OptionalInstanceIdAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.instance.id', name = 'instanceId')
     String instanceId
 
     String getInstanceId() {
-        stringProperty('OCI_INSTANCE_ID', 'oci.instance.id', this.@instanceId)
+        stringProperty(this, 'OCI_INSTANCE_ID', 'oci.instance.id', this.@instanceId)
     }
 
     void validateInstanceId() {

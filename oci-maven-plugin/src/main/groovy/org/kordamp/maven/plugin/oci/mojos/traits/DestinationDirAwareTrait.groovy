@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.directoryProperty
@@ -28,12 +29,12 @@ import static org.kordamp.maven.PropertyUtils.directoryProperty
  * @since 0.2.0
  */
 @CompileStatic
-trait DestinationDirAwareTrait implements PathAware {
+trait DestinationDirAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.destination.dir', name = 'destinationdir')
     File destinationDir
 
     File getDestinationDir() {
-        directoryProperty('OCI_DESTINATION_DIR', 'oci.destination.dir', this.@destinationDir)
+        directoryProperty(this, 'OCI_DESTINATION_DIR', 'oci.destination.dir', this.@destinationDir)
     }
 
     void validateDestinationDir() {

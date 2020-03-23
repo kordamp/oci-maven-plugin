@@ -60,7 +60,7 @@ class AddIngressSecurityRuleMojo extends AbstractOCIMojo implements SecurityList
     String[] destinationPorts
 
     PortType getPortType() {
-        PortType.valueOf(stringProperty('OCI_PORT_TYPE', 'oci.port.type', (this.@portType ?: PortType.TCP).name()).toUpperCase())
+        PortType.valueOf(stringProperty(this, 'OCI_PORT_TYPE', 'oci.port.type', (this.@portType ?: PortType.TCP).name()).toUpperCase())
     }
 
     void setSourcePorts(String[] sourcePorts) {

@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -29,11 +30,11 @@ import static org.kordamp.maven.PropertyUtils.stringProperty
  * @since 0.2.0
  */
 @CompileStatic
-trait OptionalDelimiterAwareTrait implements PathAware, LogAware {
+trait OptionalDelimiterAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.delimiter', name = 'delimiter')
     String delimiter
 
     String getDelimiter() {
-        stringProperty('OCI_DELIMITER', 'oci.dns.label', this.@delimiter)
+        stringProperty(this, 'OCI_DELIMITER', 'oci.dns.label', this.@delimiter)
     }
 }

@@ -19,6 +19,8 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
+import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.booleanProperty
 
@@ -27,11 +29,11 @@ import static org.kordamp.maven.PropertyUtils.booleanProperty
  * @since 0.1.0
  */
 @CompileStatic
-trait VerboseAwareTrait {
+trait VerboseAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.verbose', name = 'verbose')
     boolean verbose
 
     boolean isVerbose() {
-        booleanProperty('OCI_VERBOSE', 'oci.verbose', this.@verbose)
+        booleanProperty(this, 'OCI_VERBOSE', 'oci.verbose', this.@verbose)
     }
 }

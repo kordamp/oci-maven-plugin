@@ -23,6 +23,7 @@ import com.oracle.bmc.core.requests.ListImagesRequest
 import com.oracle.bmc.core.responses.ListImagesResponse
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.stringProperty
@@ -33,12 +34,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait ImageAwareTrait implements PathAware {
+trait ImageAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.image', name = 'image')
     String image
 
     String getImage() {
-        stringProperty('OCI_IMAGE', 'oci.image', this.@image)
+        stringProperty(this, 'OCI_IMAGE', 'oci.image', this.@image)
     }
 
     void validateImage() {

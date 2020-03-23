@@ -23,6 +23,7 @@ import com.oracle.bmc.identity.requests.ListAvailabilityDomainsRequest
 import com.oracle.bmc.identity.responses.ListAvailabilityDomainsResponse
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.stringProperty
@@ -33,12 +34,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait AvailabilityDomainAwareTrait implements PathAware {
+trait AvailabilityDomainAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.availability.domain', name = 'availabilityDomain')
     String availabilityDomain
 
     String getAvailabilityDomain() {
-        stringProperty('OCI_AVAILABILITY_DOMAIN', 'oci.availability.domain', this.@availabilityDomain)
+        stringProperty(this, 'OCI_AVAILABILITY_DOMAIN', 'oci.availability.domain', this.@availabilityDomain)
     }
 
     void validateAvailabilityDomain() {

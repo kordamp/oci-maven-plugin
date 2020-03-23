@@ -67,7 +67,7 @@ class InstanceActionMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
     InstanceAction action
 
     InstanceAction getAction() {
-        InstanceAction.valueOf(stringProperty('OCI_INSTANCE_ACTION', 'oci.instance.action', (this.@action ?: InstanceAction.STOP).name()).toUpperCase())
+        InstanceAction.valueOf(stringProperty(this, 'OCI_INSTANCE_ACTION', 'oci.instance.action', (this.@action ?: InstanceAction.STOP).name()).toUpperCase())
     }
 
     @Override

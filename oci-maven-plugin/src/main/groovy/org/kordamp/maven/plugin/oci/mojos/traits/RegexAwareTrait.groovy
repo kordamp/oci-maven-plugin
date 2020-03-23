@@ -19,6 +19,8 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
+import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.booleanProperty
 
@@ -27,11 +29,11 @@ import static org.kordamp.maven.PropertyUtils.booleanProperty
  * @since 0.4.0
  */
 @CompileStatic
-trait RegexAwareTrait {
+trait RegexAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.regex', name = 'regex')
     boolean regex
 
     boolean isRegex() {
-        booleanProperty('OCI_REGEX', 'oci.regex', this.@regex)
+        booleanProperty(this, 'OCI_REGEX', 'oci.regex', this.@regex)
     }
 }

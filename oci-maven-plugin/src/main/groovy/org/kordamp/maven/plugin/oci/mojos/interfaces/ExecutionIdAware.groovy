@@ -15,25 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kordamp.maven.plugin.oci.mojos.traits
-
-import groovy.transform.CompileStatic
-import org.apache.maven.plugins.annotations.Parameter
-import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
-import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
-
-import static org.kordamp.maven.PropertyUtils.stringProperty
+package org.kordamp.maven.plugin.oci.mojos.interfaces
 
 /**
  * @author Andres Almiray
- * @since 0.1.0
+ * @since 0.3.0
  */
-@CompileStatic
-trait InstanceNameAwareTrait implements PathAware, ExecutionIdAware {
-    @Parameter(property = 'oci.instance.name', name = 'instanceName')
-    String instanceName
-
-    String getInstanceName() {
-        stringProperty(this, 'OCI_INSTANCE_NAME', 'oci.instance.name', this.@instanceName)
-    }
+interface ExecutionIdAware {
+    String getExecutionId()
 }

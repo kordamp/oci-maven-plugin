@@ -23,5 +23,5 @@ import org.apache.maven.plugin.Mojo
  * @author Andres Almiray
  * @since 0.1.0
  */
-interface OCIMojo extends Mojo, PathAware, LogAware, ValuePrinter, AnsiConsoleAware {
+interface OCIMojo extends Mojo, PathAware, ExecutionIdAware, LogAware, ValuePrinter, AnsiConsoleAware {
 }

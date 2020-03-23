@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -29,11 +30,11 @@ import static org.kordamp.maven.PropertyUtils.stringProperty
  * @since 0.2.0
  */
 @CompileStatic
-trait OptionalEndAwareTrait implements PathAware, LogAware {
+trait OptionalEndAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.end', name = 'end')
     String end
 
     String getEnd() {
-        stringProperty('OCI_END', 'oci.end', this.@end)
+        stringProperty(this, 'OCI_END', 'oci.end', this.@end)
     }
 }

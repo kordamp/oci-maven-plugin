@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -29,11 +30,11 @@ import static org.kordamp.maven.PropertyUtils.stringProperty
  * @since 0.2.0
  */
 @CompileStatic
-trait OptionalDestinationNamespaceNameAwareTrait implements PathAware, LogAware {
+trait OptionalDestinationNamespaceNameAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.destination.namespace.name', name = 'destinationNamespaceName')
     String destinationNamespaceName
 
     String getDestinationNamespaceName() {
-        stringProperty('OCI_DESTINATION_NAMESPACE_NAME', 'oci.destination.namespace.name', this.@destinationNamespaceName)
+        stringProperty(this, 'OCI_DESTINATION_NAMESPACE_NAME', 'oci.destination.namespace.name', this.@destinationNamespaceName)
     }
 }

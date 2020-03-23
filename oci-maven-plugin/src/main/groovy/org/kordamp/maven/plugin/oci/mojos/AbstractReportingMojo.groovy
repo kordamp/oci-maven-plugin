@@ -19,8 +19,11 @@ package org.kordamp.maven.plugin.oci.mojos
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugin.AbstractMojo
+import org.apache.maven.plugin.MojoExecution
 import org.apache.maven.plugins.annotations.Parameter
 import org.kordamp.maven.AnsiConsole
+import org.kordamp.maven.plugin.oci.mojos.interfaces.AnsiConsoleAware
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 
 import static org.kordamp.maven.PropertyUtils.booleanProperty
 import static org.kordamp.maven.StringUtils.isNotBlank
@@ -30,7 +33,7 @@ import static org.kordamp.maven.StringUtils.isNotBlank
  * @since 0.1.0
  */
 @CompileStatic
-abstract class AbstractReportingMojo extends AbstractMojo {
+abstract class AbstractReportingMojo extends AbstractMojo implements AnsiConsoleAware, ExecutionIdAware {
     private static final String SECRET_KEYWORDS = 'password,secret,credential,token,apikey'
     private static final String KEY_SECRET_KEYWORDS = 'kordamp.secret.keywords'
 
@@ -39,12 +42,21 @@ abstract class AbstractReportingMojo extends AbstractMojo {
     @Parameter(property = 'oci.show.secrets', defaultValue = 'false')
     private boolean showSecrets
 
+    @Parameter(defaultValue = '${mojoExecution}', readonly = true)
+    private MojoExecution mojoExecution
+
+    @Override
     AnsiConsole getConsole() {
         return this.console
     }
 
+    @Override
+    String getExecutionId() {
+        mojoExecution.executionId
+    }
+
     boolean isShowSecrets() {
-        return booleanProperty('OCI_SHOW_SECRETS', 'oci.show.secrets', this.@showSecrets)
+        return booleanProperty(this, 'OCI_SHOW_SECRETS', 'oci.show.secrets', this.@showSecrets)
     }
 
     protected void print(String value, int offset) {

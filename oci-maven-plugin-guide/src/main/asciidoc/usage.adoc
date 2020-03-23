@@ -90,9 +90,23 @@ Environment:: The environment key to set this property's value. Set as key/value
 Default:: Default value for this property (if any).
 Required:: Whether this property is required or not.
 
-System values are resolved in the following order
+Property values are resolved in the following order
 
-Environment > System System > Property
+[source]
+----
+Environment > System Property > Property
+----
+
+Task paths may be used as prefix for Environment and System properties such that, for a task named `step01` on a subproject
+named `project1` you get the following Environment and System keys for the `profile` property
+
+[source]
+----
+STEP01_OCI_PROFILE
+step01.oci.profile
+OCI_PROFILE
+oci.profile
+----
 
 [[_oci_create_]]
 === OCI Create

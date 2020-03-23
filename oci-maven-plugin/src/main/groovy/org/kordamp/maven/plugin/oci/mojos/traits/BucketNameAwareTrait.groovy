@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.2.0
  */
 @CompileStatic
-trait BucketNameAwareTrait implements PathAware, LogAware {
+trait BucketNameAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.bucket.name', name = 'bucketName')
     String bucketName
 
     String getBucketName() {
-        stringProperty('OCI_BUCKET_NAME', 'oci.bucket.name', this.@bucketName)
+        stringProperty(this, 'OCI_BUCKET_NAME', 'oci.bucket.name', this.@bucketName)
     }
 
     void validateBucketName() {

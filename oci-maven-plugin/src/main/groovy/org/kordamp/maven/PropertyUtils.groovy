@@ -18,6 +18,7 @@
 package org.kordamp.maven
 
 import groovy.transform.CompileStatic
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 
 import java.nio.file.Paths
 
@@ -30,40 +31,69 @@ import static StringUtils.isNotBlank
  */
 @CompileStatic
 class PropertyUtils {
-    static String stringProperty(String envKey, String propertyKey, String alternateValue) {
-        String value = System.getenv(envKey)
+    private static String normalizePath(String path, String delimiter) {
+        if (':' == path) {
+            return ''
+        }
+        return path.replace(':', delimiter) + delimiter
+    }
+
+    private static String resolveValue(String envKey,
+                                       String propertyKey,
+                                       ExecutionIdAware executionIdAware) {
+        String value = System.getenv(normalizePath(executionIdAware.executionId, '_').toUpperCase() + envKey)
+        if (isBlank(value)) value = System.getProperty(normalizePath(executionIdAware.executionId, '.') + propertyKey)
+        if (isBlank(value)) value = System.getenv(envKey)
         if (isBlank(value)) value = System.getProperty(propertyKey)
+
+        value
+    }
+
+    static String stringProperty(ExecutionIdAware executionIdAware,
+                                 String envKey,
+                                 String propertyKey,
+                                 String alternateValue) {
+        String value = resolveValue(envKey, propertyKey, executionIdAware)
         return isNotBlank(value) ? value : alternateValue
     }
 
-    static boolean booleanProperty(String envKey, String propertyKey, boolean alternateValue) {
-        String value = System.getenv(envKey)
-        if (isBlank(value)) value = System.getProperty(propertyKey)
+    static boolean booleanProperty(ExecutionIdAware executionIdAware,
+                                   String envKey,
+                                   String propertyKey,
+                                   boolean alternateValue) {
+        String value = resolveValue(envKey, propertyKey, executionIdAware)
         if (isNotBlank(value)) {
             return Boolean.parseBoolean(value)
         }
         return alternateValue
     }
 
-    static Integer integerProperty(String envKey, String propertyKey, Integer alternateValue) {
-        String value = System.getenv(envKey)
-        if (isBlank(value)) value = System.getProperty(propertyKey)
+    static Integer integerProperty(ExecutionIdAware executionIdAware,
+                                   String envKey,
+                                   String propertyKey,
+                                   Integer alternateValue) {
+        String value = resolveValue(envKey, propertyKey, executionIdAware)
         if (isNotBlank(value)) {
             return Integer.parseInt(value)
         }
         return alternateValue
     }
 
-    static File fileProperty(String envKey, String propertyKey, File alternateValue) {
-        String value = System.getenv(envKey)
-        if (isBlank(value)) value = System.getProperty(propertyKey)
+    static File fileProperty(ExecutionIdAware executionIdAware,
+                             String envKey,
+                             String propertyKey,
+                             File alternateValue) {
+        String value = resolveValue(envKey, propertyKey, executionIdAware)
         if (isNotBlank(value)) {
             return Paths.get(value).toFile()
         }
         return alternateValue
     }
 
-    static File directoryProperty(String envKey, String propertyKey, File alternateValue) {
-        return fileProperty(envKey, propertyKey, alternateValue)
+    static File directoryProperty(ExecutionIdAware executionIdAware,
+                                  String envKey,
+                                  String propertyKey,
+                                  File alternateValue) {
+        return fileProperty(executionIdAware, envKey, propertyKey, alternateValue)
     }
 }

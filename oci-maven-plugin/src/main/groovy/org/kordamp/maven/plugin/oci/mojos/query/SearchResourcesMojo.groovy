@@ -43,7 +43,7 @@ class SearchResourcesMojo extends AbstractOCIMojo {
     private String type
 
     String getType() {
-        stringProperty('OCI_RESOURCE_TYPE', 'oci.resource.type', this.@type)
+        stringProperty(this, 'OCI_RESOURCE_TYPE', 'oci.resource.type', this.@type)
     }
 
     @Override

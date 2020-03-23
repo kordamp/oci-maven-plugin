@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait CompartmentNameAwareTrait implements PathAware, LogAware {
+trait CompartmentNameAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.compartment.name', name = 'compartmentName')
     String compartmentName
 
     String getCompartmentName() {
-        stringProperty('OCI_COMPARTMENT_NAME', 'oci.compartment.name', this.@compartmentName)
+        stringProperty(this, 'OCI_COMPARTMENT_NAME', 'oci.compartment.name', this.@compartmentName)
     }
 
     void validateCompartmentName() {

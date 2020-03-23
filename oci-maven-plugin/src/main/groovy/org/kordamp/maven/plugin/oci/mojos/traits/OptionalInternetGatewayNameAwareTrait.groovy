@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.LogAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
@@ -30,12 +31,12 @@ import static org.kordamp.maven.StringUtils.isBlank
  * @since 0.1.0
  */
 @CompileStatic
-trait OptionalInternetGatewayNameAwareTrait implements PathAware, LogAware {
+trait OptionalInternetGatewayNameAwareTrait implements PathAware, ExecutionIdAware, LogAware {
     @Parameter(property = 'oci.internet.gateway.name', name = 'internetGatewayName')
     String internetGatewayName
 
     String getInternetGatewayName() {
-        stringProperty('OCI_INTERNET_GATEWAY_NAME', 'oci.internet.gateway.name', this.@internetGatewayName)
+        stringProperty(this, 'OCI_INTERNET_GATEWAY_NAME', 'oci.internet.gateway.name', this.@internetGatewayName)
     }
 
     void validateInternetGatewayName() {

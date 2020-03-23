@@ -19,6 +19,7 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
 import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.stringProperty
@@ -28,11 +29,11 @@ import static org.kordamp.maven.PropertyUtils.stringProperty
  * @since 0.1.0
  */
 @CompileStatic
-trait OptionalInstanceNameAwareTrait implements PathAware {
+trait OptionalInstanceNameAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.instance.name', name = 'instanceName')
     String instanceName
 
     String getInstanceName() {
-        stringProperty('OCI_INSTANCE_NAME', 'oci.instance.name', this.@instanceName)
+        stringProperty(this, 'OCI_INSTANCE_NAME', 'oci.instance.name', this.@instanceName)
     }
 }

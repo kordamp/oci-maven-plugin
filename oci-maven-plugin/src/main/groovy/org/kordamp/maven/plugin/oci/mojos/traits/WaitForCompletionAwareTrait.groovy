@@ -19,6 +19,8 @@ package org.kordamp.maven.plugin.oci.mojos.traits
 
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Parameter
+import org.kordamp.maven.plugin.oci.mojos.interfaces.ExecutionIdAware
+import org.kordamp.maven.plugin.oci.mojos.interfaces.PathAware
 
 import static org.kordamp.maven.PropertyUtils.booleanProperty
 
@@ -27,11 +29,11 @@ import static org.kordamp.maven.PropertyUtils.booleanProperty
  * @since 0.1.0
  */
 @CompileStatic
-trait WaitForCompletionAwareTrait {
+trait WaitForCompletionAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.wait.for.completion', name = 'waitForCompletion')
     boolean waitForCompletion
 
     boolean isWaitForCompletion() {
-        booleanProperty('OCI_WAIT_FOR_COMPLETION', 'oci.wait.for.completion', this.@waitForCompletion)
+        booleanProperty(this, 'OCI_WAIT_FOR_COMPLETION', 'oci.wait.for.completion', this.@waitForCompletion)
     }
 }
