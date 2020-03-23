@@ -41,6 +41,7 @@ import com.oracle.bmc.core.requests.LaunchInstanceRequest
 import com.oracle.bmc.core.requests.ListBootVolumesRequest
 import com.oracle.bmc.core.requests.ListInstancesRequest
 import com.oracle.bmc.core.requests.ListShapesRequest
+import com.oracle.bmc.core.requests.ListSubnetsRequest
 import com.oracle.bmc.identity.IdentityClient
 import com.oracle.bmc.identity.model.AvailabilityDomain
 import com.oracle.bmc.identity.requests.ListAvailabilityDomainsRequest
@@ -144,6 +145,12 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
             compartmentId,
             shape.shape)
 
+        subnet = findMatchingSubnet(owner,
+            vcnClient,
+            compartmentId,
+            subnet.vcnId,
+            availabilityDomain)
+
         Instance instance = doMaybeCreateInstance(owner,
             computeClient,
             vcnClient,
@@ -193,6 +200,23 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
                 if (shape.shape == shapeName) {
                     return availabilityDomain
                 }
+            }
+        }
+
+        null
+    }
+
+    private static Subnet findMatchingSubnet(OCIMojo owner,
+                                             VirtualNetworkClient vcnClient,
+                                             String compartmentId,
+                                             String vcnId,
+                                             AvailabilityDomain availabilityDomain) {
+        for (Subnet subnet : vcnClient.listSubnets(ListSubnetsRequest.builder()
+            .compartmentId(compartmentId)
+            .vcnId(vcnId)
+            .build()).items) {
+            if (subnet.availabilityDomain == availabilityDomain.name) {
+                return subnet
             }
         }
 
