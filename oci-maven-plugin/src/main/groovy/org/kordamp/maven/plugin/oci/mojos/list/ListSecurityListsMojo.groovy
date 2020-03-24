@@ -39,6 +39,14 @@ class ListSecurityListsMojo extends AbstractOCIMojo implements CompartmentIdAwar
     VcnIdAwareTrait,
     VerboseAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
         validateVcnId()

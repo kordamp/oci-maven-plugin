@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.InstanceConsoleConnect
 @Mojo(name = 'get-instance-console-connection')
 class GetInstanceConsoleConnectionMojo extends AbstractOCIMojo implements InstanceConsoleConnectionIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'instanceConsoleConnectionId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateInstanceConsoleConnectionId()
 

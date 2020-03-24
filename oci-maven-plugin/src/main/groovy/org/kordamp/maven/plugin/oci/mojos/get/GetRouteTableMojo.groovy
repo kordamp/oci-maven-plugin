@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.RouteTablePrinter.prin
 @Mojo(name = 'get-route-table')
 class GetRouteTableMojo extends AbstractOCIMojo implements RouteTableIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'routeTableId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateRouteTableId()
 

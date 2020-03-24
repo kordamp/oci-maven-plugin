@@ -44,6 +44,16 @@ class DownloadObjectMojo extends AbstractOCIMojo implements NamespaceNameAwareTr
     ObjectNameAwareTrait,
     DestinationDirAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName',
+            'objectName',
+            'destinationDir'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateNamespaceName()
         validateBucketName()

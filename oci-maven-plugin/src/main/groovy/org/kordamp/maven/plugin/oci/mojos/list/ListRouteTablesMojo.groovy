@@ -39,6 +39,14 @@ class ListRouteTablesMojo extends AbstractOCIMojo implements CompartmentIdAwareT
     VcnIdAwareTrait,
     VerboseAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
         validateVcnId()

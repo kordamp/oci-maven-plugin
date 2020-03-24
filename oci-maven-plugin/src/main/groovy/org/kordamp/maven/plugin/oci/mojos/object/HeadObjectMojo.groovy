@@ -38,6 +38,15 @@ class HeadObjectMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait,
     BucketNameAwareTrait,
     ObjectNameAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName',
+            'objectName'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateNamespaceName()
         validateBucketName()

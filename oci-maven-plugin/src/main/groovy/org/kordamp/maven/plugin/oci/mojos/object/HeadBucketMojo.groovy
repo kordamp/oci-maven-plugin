@@ -35,6 +35,14 @@ import org.kordamp.maven.plugin.oci.mojos.traits.NamespaceNameAwareTrait
 class HeadBucketMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait,
     BucketNameAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateNamespaceName()
         validateBucketName()

@@ -35,6 +35,15 @@ import org.kordamp.maven.plugin.oci.mojos.traits.WaitForCompletionAwareTrait
 class DeleteBucketMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait,
     BucketNameAwareTrait,
     WaitForCompletionAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateNamespaceName()

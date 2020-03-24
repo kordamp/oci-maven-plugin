@@ -45,6 +45,17 @@ class DeleteSubnetMojo extends AbstractOCIMojo implements CompartmentIdAwareTrai
     OptionalSubnetIdAwareTrait,
     OptionalSubnetNameAwareTrait,
     WaitForCompletionAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnId',
+            'subnetId',
+            'subnetName'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateSubnetId()

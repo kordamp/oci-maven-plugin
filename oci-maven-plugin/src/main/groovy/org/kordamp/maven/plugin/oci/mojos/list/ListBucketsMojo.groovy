@@ -46,6 +46,16 @@ class ListBucketsMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait
     OptionalLimitAwareTrait,
     VerboseAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'namespaceName',
+            'page',
+            'limit'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
         validateNamespaceName()

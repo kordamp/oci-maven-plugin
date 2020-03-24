@@ -45,6 +45,17 @@ class DeleteInternetGatewayMojo extends AbstractOCIMojo implements CompartmentId
     OptionalInternetGatewayIdAwareTrait,
     OptionalInternetGatewayNameAwareTrait,
     WaitForCompletionAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnId',
+            'internetGatewayId',
+            'internetGatewayName'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateInternetGatewayId()

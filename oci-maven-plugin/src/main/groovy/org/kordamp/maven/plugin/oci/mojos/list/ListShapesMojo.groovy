@@ -34,6 +34,13 @@ import org.kordamp.maven.plugin.oci.mojos.traits.CompartmentIdAwareTrait
 @Mojo(name = 'list-shapes')
 class ListShapesMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
 

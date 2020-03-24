@@ -55,6 +55,16 @@ class CreateSubnetMojo extends AbstractOCIMojo implements CompartmentIdAwareTrai
     String createdSubnetId
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'availabilityDomain',
+            'vcnId',
+            'dnsLabel'
+        ]
+    }
+
+    @Override
     void executeGoal() {
         validateCompartmentId()
         validateVcnId()

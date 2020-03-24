@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.SubnetPrinter.printSub
 @Mojo(name = 'get-subnet')
 class GetSubnetMojo extends AbstractOCIMojo implements SubnetIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'subnetId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateSubnetId()
 

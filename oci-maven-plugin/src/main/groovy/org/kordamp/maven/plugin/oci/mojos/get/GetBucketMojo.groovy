@@ -36,6 +36,15 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.BucketPrinter.printBuc
 @Mojo(name = 'get-bucket')
 class GetBucketMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait,
     BucketNameAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateNamespaceName()

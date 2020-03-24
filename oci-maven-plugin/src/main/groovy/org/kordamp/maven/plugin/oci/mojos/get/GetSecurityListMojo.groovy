@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.SecurityListPrinter.pr
 @Mojo(name = 'get-security-list')
 class GetSecurityListMojo extends AbstractOCIMojo implements SecurityListIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'securityListId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateSecurityListId()
 

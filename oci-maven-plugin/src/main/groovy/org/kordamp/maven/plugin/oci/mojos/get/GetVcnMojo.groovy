@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.VcnPrinter.printVcn
 @Mojo(name = 'get-vcn')
 class GetVcnMojo extends AbstractOCIMojo implements VcnIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'vcnId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateVcnId()
 

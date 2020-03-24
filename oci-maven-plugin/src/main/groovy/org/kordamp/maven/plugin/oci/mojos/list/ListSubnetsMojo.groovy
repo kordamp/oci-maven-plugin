@@ -35,7 +35,17 @@ import org.kordamp.maven.plugin.oci.mojos.traits.VerboseAwareTrait
  */
 @CompileStatic
 @Mojo(name = 'list-subnets')
-class ListSubnetsMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait, VcnIdAwareTrait, VerboseAwareTrait {
+class ListSubnetsMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait,
+    VcnIdAwareTrait,
+    VerboseAwareTrait {
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnId'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateCompartmentId()

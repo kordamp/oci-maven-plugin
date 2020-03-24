@@ -52,6 +52,19 @@ class CopyObjectMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait,
     OptionalDestinationBucketNameAwareTrait,
     DestinationObjectNameAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName',
+            'objectName',
+            'destinationRegion',
+            'destinationNamespaceName',
+            'destinationBucketName',
+            'destinationObjectName'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateNamespaceName()
         validateBucketName()

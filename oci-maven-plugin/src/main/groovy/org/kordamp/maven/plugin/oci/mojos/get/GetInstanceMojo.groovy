@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.InstancePrinter.printI
 @Mojo(name = 'get-instance')
 class GetInstanceMojo extends AbstractOCIMojo implements InstanceIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'instanceId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateInstanceId()
 

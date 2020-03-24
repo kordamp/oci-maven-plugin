@@ -36,6 +36,14 @@ import org.kordamp.maven.plugin.oci.mojos.traits.InstanceIdAwareTrait
 @Mojo(name = 'list-instance-console-connections')
 class ListInstanceConsoleConnectionsMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait, InstanceIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'instanceId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
         validateInstanceId()

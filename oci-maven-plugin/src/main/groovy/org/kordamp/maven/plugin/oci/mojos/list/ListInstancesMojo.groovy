@@ -35,7 +35,17 @@ import org.kordamp.maven.plugin.oci.mojos.traits.VerboseAwareTrait
  */
 @CompileStatic
 @Mojo(name = 'list-instances')
-class ListInstancesMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait, AvailabilityDomainAwareTrait, VerboseAwareTrait {
+class ListInstancesMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait,
+    AvailabilityDomainAwareTrait,
+    VerboseAwareTrait {
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'availabilityDomain'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateCompartmentId()

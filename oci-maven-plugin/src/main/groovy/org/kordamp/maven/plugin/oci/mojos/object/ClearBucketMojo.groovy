@@ -43,6 +43,14 @@ class ClearBucketMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait
     BucketNameAwareTrait,
     AsyncAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateNamespaceName()
         validateBucketName()

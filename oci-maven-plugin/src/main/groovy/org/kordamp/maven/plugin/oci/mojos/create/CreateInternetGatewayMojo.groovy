@@ -56,6 +56,15 @@ class CreateInternetGatewayMojo extends AbstractOCIMojo implements CompartmentId
     String createdInternetGatewayId
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnId',
+            'internetGatewayName'
+        ]
+    }
+
+    @Override
     void executeGoal() {
         validateCompartmentId()
         validateVcnId()

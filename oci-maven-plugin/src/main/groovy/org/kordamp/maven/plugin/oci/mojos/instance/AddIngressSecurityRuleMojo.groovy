@@ -90,6 +90,13 @@ class AddIngressSecurityRuleMojo extends AbstractOCIMojo implements SecurityList
     }
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'securityListId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateSecurityListId()
 

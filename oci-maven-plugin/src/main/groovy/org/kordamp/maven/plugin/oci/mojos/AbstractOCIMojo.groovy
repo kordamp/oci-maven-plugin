@@ -56,8 +56,8 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
     protected final List<AutoCloseable> closeables = new ArrayList<>()
     private AuthenticationDetailsProvider authenticationDetailsProvider
 
-    @Parameter(defaultValue = '${project}', readonly = true, required = true)
-    private MavenProject project;
+    @Parameter(defaultValue = '${project}', readonly = true, required = true, name = 'project')
+    private MavenProject project
 
     @Parameter(property = 'oci.profile', defaultValue = 'DEFAULT')
     private String profile
@@ -79,6 +79,11 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
 
     @Parameter(property = 'oci.keyfile')
     private File keyfile
+
+    @Parameter(property = 'oci.input.properties')
+    private File inputProperties
+
+    private final Properties _inputProperties = new Properties()
 
     String getProfile() {
         stringProperty(this, 'OCI_PROFILE', 'oci.profile', this.@profile)
@@ -112,10 +117,52 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
         Banner.display(project, getLog())
         System.setProperty('sun.net.http.allowRestrictedHeaders', 'true')
 
+        loadProperties()
+        interpolateProperties()
         executeGoal()
 
         closeables.each { c -> c.close() }
         closeables.clear()
+    }
+
+    private void loadProperties() {
+        if (inputProperties != null && inputProperties.exists()) {
+            try {
+                _inputProperties.load(new FileInputStream(inputProperties))
+            } catch (IOException ignored) {
+                // ignore
+            }
+        }
+    }
+
+    private void interpolateProperties() {
+        List<String> props = [
+            'profile',
+            'region',
+            'userId',
+            'tenantId',
+            'fingerprint',
+            'passphrase'
+        ] + resolveInterpolationProperties()
+
+        for (String p : props) {
+            String propertyKey = String.valueOf(getProperty(p))
+            if (isPropertyKey(propertyKey)) {
+                setProperty(p, getInputProperty(propertyKey))
+            }
+        }
+    }
+
+    protected List<String> resolveInterpolationProperties() {
+        []
+    }
+
+    private String getInputProperty(String key) {
+        _inputProperties.getProperty(key[2..-2])
+    }
+
+    private boolean isPropertyKey(String str) {
+        isNotBlank(str) && (str.startsWith('#{') && str.endsWith('}') && str.size() > 3)
     }
 
     abstract protected void executeGoal()

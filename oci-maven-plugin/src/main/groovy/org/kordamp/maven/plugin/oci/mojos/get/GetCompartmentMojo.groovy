@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.CompartmentPrinter.pri
 @Mojo(name = 'get-compartment')
 class GetCompartmentMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
 

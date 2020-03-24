@@ -35,6 +35,14 @@ import org.kordamp.maven.plugin.oci.mojos.traits.WaitForCompletionAwareTrait
 @Mojo(name = 'delete-instance-console-connection')
 class DeleteInstanceConsoleConnectionMojo extends AbstractOCIMojo implements InstanceConsoleConnectionIdAwareTrait,
     WaitForCompletionAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'instanceConsoleConnectionId'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateInstanceConsoleConnectionId()

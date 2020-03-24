@@ -63,6 +63,19 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
     OptionalUserDataFileAwareTrait,
     OptionalDnsLabelAwareTrait,
     VerboseAwareTrait {
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'instanceName',
+            'image',
+            'shape',
+            'publicKeyFile',
+            'userDataFile',
+            'dnsLabel'
+        ]
+    }
+
     private String createdInstanceId
     private File output
 

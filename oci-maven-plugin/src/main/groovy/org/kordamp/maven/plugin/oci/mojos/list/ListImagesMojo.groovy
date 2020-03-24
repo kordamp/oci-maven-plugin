@@ -36,6 +36,13 @@ import org.kordamp.maven.plugin.oci.mojos.traits.VerboseAwareTrait
 @Mojo(name = 'list-images')
 class ListImagesMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait, VerboseAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
 

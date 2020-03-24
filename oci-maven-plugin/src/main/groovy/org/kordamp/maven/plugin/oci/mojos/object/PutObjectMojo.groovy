@@ -49,6 +49,20 @@ class PutObjectMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait,
     OptionalContentEncodingAwareTrait,
     OptionalContentTypeAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName',
+            'objectName',
+            'file',
+            'contentMD5',
+            'contentLanguage',
+            'contentEncoding',
+            'contentType'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateNamespaceName()
         validateBucketName()

@@ -53,6 +53,20 @@ class ListObjectsMojo extends AbstractOCIMojo implements NamespaceNameAwareTrait
     OptionalFieldsAwareTrait,
     VerboseAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName',
+            'prefix',
+            'delimiter',
+            'start',
+            'end',
+            'limit',
+            'fields'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateNamespaceName()
         validateBucketName()

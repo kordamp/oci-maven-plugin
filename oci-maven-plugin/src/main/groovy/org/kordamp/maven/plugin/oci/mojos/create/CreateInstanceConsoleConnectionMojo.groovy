@@ -49,6 +49,15 @@ class CreateInstanceConsoleConnectionMojo extends AbstractOCIMojo implements Com
     String createdConnectionId
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'instanceId',
+            'publicKeyFile'
+        ]
+    }
+
+    @Override
     void executeGoal() {
         validateCompartmentId()
         validateInstanceId()

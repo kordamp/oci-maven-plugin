@@ -45,6 +45,14 @@ import org.kordamp.maven.plugin.oci.mojos.traits.InstanceIdAwareTrait
 class GetInstancePublicIpMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait,
     InstanceIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'instanceId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
         validateInstanceId()

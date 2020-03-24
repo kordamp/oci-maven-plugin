@@ -35,6 +35,13 @@ import static org.kordamp.maven.StringUtils.isNotBlank
 @Mojo(name = 'get-namespace')
 class GetNamespaceMojo extends AbstractOCIMojo implements OptionalCompartmentIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateCompartmentId()
 

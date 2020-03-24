@@ -49,6 +49,15 @@ class CreateVcnMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait,
     String createdVcnId
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnName',
+            'dnsLabel'
+        ]
+    }
+
+    @Override
     void executeGoal() {
         validateCompartmentId()
         validateDnsLabel(getCompartmentId())

@@ -82,6 +82,19 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
     String createdInstanceId
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'subnetId',
+            'instanceName',
+            'image',
+            'shape',
+            'publicKeyFile',
+            'userDataFile'
+        ]
+    }
+
+    @Override
     void executeGoal() {
         validateCompartmentId()
         validateSubnetId()

@@ -43,6 +43,16 @@ class DeleteVcnMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait,
     OptionalVcnIdAwareTrait,
     OptionalVcnNameAwareTrait,
     WaitForCompletionAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'vcnId',
+            'vcnName'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateVcnId()

@@ -49,6 +49,15 @@ class CreateBucketMojo extends AbstractOCIMojo implements CompartmentIdAwareTrai
     VerboseAwareTrait {
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'namespaceName',
+            'bucketName'
+        ]
+    }
+
+    @Override
     void executeGoal() {
         validateCompartmentId()
         validateNamespaceName()

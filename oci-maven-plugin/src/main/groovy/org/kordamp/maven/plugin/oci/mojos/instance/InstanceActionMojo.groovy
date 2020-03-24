@@ -45,6 +45,15 @@ class InstanceActionMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
     OptionalInstanceIdAwareTrait,
     OptionalInstanceNameAwareTrait,
     WaitForCompletionAwareTrait {
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'instanceId',
+            'instanceName'
+        ]
+    }
+
     private static enum InstanceAction {
         START(Instance.LifecycleState.Running),
         STOP(Instance.LifecycleState.Stopped),

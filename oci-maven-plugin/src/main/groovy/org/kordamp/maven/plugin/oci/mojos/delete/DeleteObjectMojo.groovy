@@ -37,6 +37,16 @@ class DeleteObjectMojo extends AbstractOCIMojo implements NamespaceNameAwareTrai
     BucketNameAwareTrait,
     ObjectNameAwareTrait,
     WaitForCompletionAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'namespaceName',
+            'bucketName',
+            'objectName'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateNamespaceName()

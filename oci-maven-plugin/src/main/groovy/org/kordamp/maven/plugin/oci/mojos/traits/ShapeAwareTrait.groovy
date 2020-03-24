@@ -36,7 +36,7 @@ import static org.kordamp.maven.StringUtils.isBlank
 @CompileStatic
 trait ShapeAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.shape', name = 'shape')
-    private String shape
+    String shape
 
     String getShape() {
         stringProperty(this, 'OCI_SHAPE', 'oci.shape', this.@shape)

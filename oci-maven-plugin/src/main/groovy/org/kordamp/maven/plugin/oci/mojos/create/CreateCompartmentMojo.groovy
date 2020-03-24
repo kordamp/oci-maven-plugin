@@ -49,6 +49,15 @@ class CreateCompartmentMojo extends AbstractOCIMojo implements CompartmentIdAwar
     String createdCompartmentId
 
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'compartmentName',
+            'compartmentDescription'
+        ]
+    }
+
+    @Override
     void executeGoal() {
         validateCompartmentId()
         validateCompartmentName()

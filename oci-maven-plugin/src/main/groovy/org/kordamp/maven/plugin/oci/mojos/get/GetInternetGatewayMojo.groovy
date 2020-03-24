@@ -35,6 +35,13 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.InternetGatewayPrinter
 @Mojo(name = 'get-get-internet-gateway')
 class GetInternetGatewayMojo extends AbstractOCIMojo implements InternetGatewayIdAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'internetGatewayId'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateInternetGatewayId()
 

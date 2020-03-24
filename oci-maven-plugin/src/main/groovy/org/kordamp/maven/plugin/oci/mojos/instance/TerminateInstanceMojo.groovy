@@ -46,6 +46,15 @@ class TerminateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwar
     RegexAwareTrait,
     WaitForCompletionAwareTrait {
     @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId',
+            'instanceId',
+            'instanceName'
+        ]
+    }
+
+    @Override
     protected void executeGoal() {
         validateInstanceId()
 

@@ -35,6 +35,14 @@ import org.kordamp.maven.plugin.oci.mojos.traits.WaitForCompletionAwareTrait
 @Mojo(name = 'delete-compartment')
 class DeleteCompartmentMojo extends AbstractOCIMojo implements CompartmentIdAwareTrait,
     WaitForCompletionAwareTrait {
+
+    @Override
+    protected List<String> resolveInterpolationProperties() {
+        [
+            'compartmentId'
+        ]
+    }
+
     @Override
     protected void executeGoal() {
         validateCompartmentId()

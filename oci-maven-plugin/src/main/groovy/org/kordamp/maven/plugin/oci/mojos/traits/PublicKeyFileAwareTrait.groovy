@@ -31,7 +31,7 @@ import static org.kordamp.maven.PropertyUtils.fileProperty
 @CompileStatic
 trait PublicKeyFileAwareTrait implements PathAware, ExecutionIdAware {
     @Parameter(property = 'oci.public.key.file', name = 'publicKeyFile')
-    private File publicKeyFile
+    File publicKeyFile
 
     File getPublicKeyFile() {
         fileProperty(this, 'OCI_PUBLIC_KEY_FILE', 'oci.public.key.file', this.@publicKeyFile)
