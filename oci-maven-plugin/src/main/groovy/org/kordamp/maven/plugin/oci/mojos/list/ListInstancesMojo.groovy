@@ -56,9 +56,13 @@ class ListInstancesMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
             .availabilityDomain(getAvailabilityDomain())
             .build())
 
-        println('Total Instances: ' + console.cyan(response.items.size().toString()))
+        List<Instance> instances = response.items.findAll {
+            it.lifecycleState != Instance.LifecycleState.Terminated
+        }
+
+        println('Total Instances: ' + console.cyan(instances.size().toString()))
         println(' ')
-        for (Instance instance : response.items) {
+        for (Instance instance : instances) {
             println(instance.displayName + (isVerbose() ? ':' : ''))
             if (isVerbose()) {
                 InstancePrinter.printInstance(this, instance, 0)

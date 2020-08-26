@@ -129,6 +129,7 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
             getInstanceName(),
             _image,
             _shape,
+            null,
             subnet,
             publicKeyFile,
             userDataFile,
@@ -146,30 +147,31 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
                                         String instanceName,
                                         Image image,
                                         Shape shape,
+                                        AvailabilityDomain availabilityDomain,
                                         Subnet subnet,
                                         File publicKeyFile,
                                         File userDataFile,
                                         String kmsKeyId,
                                         boolean verbose) {
-        AvailabilityDomain availabilityDomain = findMatchingAvailabilityDomain(
+        AvailabilityDomain ad = availabilityDomain ?: findMatchingAvailabilityDomain(
             owner,
             computeClient,
             identityClient,
             compartmentId,
             shape.shape)
 
-        subnet = findMatchingSubnet(owner,
+        subnet = subnet ?: findMatchingSubnet(owner,
             vcnClient,
             compartmentId,
             subnet.vcnId,
-            availabilityDomain)
+            ad)
 
         Instance instance = doMaybeCreateInstance(owner,
             computeClient,
             vcnClient,
             compartmentId,
             instanceName,
-            availabilityDomain?.name ?: subnet.availabilityDomain,
+            ad?.name ?: subnet.availabilityDomain,
             image.id,
             shape.shape,
             subnet.id,
@@ -189,7 +191,7 @@ class CreateInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTr
         maybeCreateBootVolume(owner,
             blockstorageClient,
             compartmentId,
-            availabilityDomain?.name ?: subnet.availabilityDomain,
+            ad?.name ?: subnet.availabilityDomain,
             instance.imageId,
             instance.displayName + '-boot-volume',
             kmsKeyId,

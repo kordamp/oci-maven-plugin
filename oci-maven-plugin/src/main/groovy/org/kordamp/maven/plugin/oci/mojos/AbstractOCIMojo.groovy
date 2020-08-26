@@ -258,22 +258,28 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
                 case 'Exporting':
                 case 'Starting':
                 case 'CreatingImage':
+                case 'InProgress':
+                case 'Canceling':
+                case 'Deleting':
+                case 'Terminating':
+                case 'Moving':
                     return console.yellow(state)
                 case 'Available':
                 case 'Running':
                 case 'Active':
+                case 'Completed':
                     return console.green(state)
                 case 'Inactive':
                 case 'Stopping':
                 case 'Stopped':
+                case 'Accepted':
                     return console.cyan(state)
                 case 'Disabled':
-                case 'Deleting':
                 case 'Deleted':
-                case 'Terminating':
                 case 'Terminated':
                 case 'Faulty':
                 case 'Failed':
+                case 'Canceled':
                     return console.red(state)
             }
         }

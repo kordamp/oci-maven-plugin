@@ -492,15 +492,17 @@ NOTE: Valid values for `action` are: `RESET`, `SOFTRESET`, `SOFTSTOP`, `START`, 
 .setupInstance
 [options="header", cols="5*<,^"]
 |===
-| Property          | Type    | System                  | Environment             | Default | Required
-| compartmentId     | String  | oci.compartment.id      | OCI_COMPARTMENT_ID      |         | icon:check[role="green"]
-| image             | String  | oci.image               | OCI_IMAGE               |         | icon:check[role="green"]
-| instanceName      | String  | oci.instance.name       | OCI_INSTANCE_NAME       |         | icon:check[role="green"]
-| publicKeyFile     | File    | oci.public.key.file     | OCI_PUBLIC_KEY_FILE     |         | icon:check[role="green"]
-| shape             | String  | oci.shape               | OCI_SHAPE               |         | icon:check[role="green"]
-| userDataFile      | File    | oci.user.data.file      | OCI_USER_DATA_FILE      |         | icon:check[role="green"]
-| verbose           | boolean | oci.verbose             | OCI_VERBOSE             | false   | icon:times[role="red"]
-| waitForCompletion | boolean | oci.wait.for.completion | OCI_WAIT_FOR_COMPLETION | false   | icon:times[role="red"]
+| Property           | Type    | System                  | Environment             | Default | Required
+| availabilityDomain | String  | oci.availability.domain | OCI_AVAILABILITY_DOMAIN |         | icon:times[role="red"]
+| compartmentId      | String  | oci.compartment.id      | OCI_COMPARTMENT_ID      |         | icon:check[role="green"]
+| image              | String  | oci.image               | OCI_IMAGE               |         | icon:check[role="green"]
+| instanceName       | String  | oci.instance.name       | OCI_INSTANCE_NAME       |         | icon:check[role="green"]
+| publicKeyFile      | File    | oci.public.key.file     | OCI_PUBLIC_KEY_FILE     |         | icon:check[role="green"]
+| shape              | String  | oci.shape               | OCI_SHAPE               |         | icon:check[role="green"]
+| subnetId           | String  | oci.subnet.id           | OCI_SUBNET_ID           |         | icon:times[role="red"]
+| userDataFile       | File    | oci.user.data.file      | OCI_USER_DATA_FILE      |         | icon:check[role="green"]
+| verbose            | boolean | oci.verbose             | OCI_VERBOSE             | false   | icon:times[role="red"]
+| waitForCompletion  | boolean | oci.wait.for.completion | OCI_WAIT_FOR_COMPLETION | false   | icon:times[role="red"]
 |===
 <<_oci_instance_,icon:arrow-up[] top>>
 

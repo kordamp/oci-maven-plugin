@@ -4,7 +4,7 @@
 
     <groupId>org.kordamp.maven</groupId>
     <artifactId>oci-maven-plugin</artifactId>
-    <version>0.3.0</version>
+    <version>0.4.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>oci-maven-plugin</name>
@@ -38,9 +38,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.version>3.6.2</maven.version>
-        <oci.sdk.version>1.15.2</oci.sdk.version>
-        <groovy.version>2.5.10</groovy.version>
+        <maven.version>3.6.3</maven.version>
+        <oci.sdk.version>1.22.1</oci.sdk.version>
+        <groovy.version>3.0.5</groovy.version>
         <product.version>${project.version}</product.version>
         <product.id>oci-maven</product.id>
         <product.name>OCI Maven plugin</product.name>
@@ -55,6 +55,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.30</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -64,6 +74,12 @@
             <artifactId>maven-plugin-api</artifactId>
             <version>${maven.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.annotation</groupId>
+                    <artifactId>jsr250-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -92,6 +108,16 @@
         <dependency>
             <groupId>com.oracle.oci.sdk</groupId>
             <artifactId>oci-java-sdk-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.glassfish.hk2.external</groupId>
+                    <artifactId>javax.inject</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.glassfish.hk2.external</groupId>
+                    <artifactId>aopalliance-repackaged</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.oracle.oci.sdk</groupId>
@@ -309,7 +335,7 @@
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.8.1</version>
+                <version>1.9.0</version>
                 <executions>
                     <execution>
                         <id>compile-groovy</id>
@@ -372,10 +398,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.0.0-M3</version>
                 <executions>
                     <execution>
-                        <id>enforce-maven</id>
                         <goals>
                             <goal>enforce</goal>
                         </goals>
@@ -384,14 +409,27 @@
                 <configuration>
                     <rules>
                         <requireMavenVersion>
-                            <version>3.5</version>
+                            <version>${maven.version}</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
                             <version>${maven.compiler.source}</version>
                         </requireJavaVersion>
+                        <enforceBytecodeVersion>
+                            <maxJdkVersion>${maven.compiler.source}</maxJdkVersion>
+                        </enforceBytecodeVersion>
                         <requireUpperBoundDeps/>
+                        <banDuplicateClasses>
+                            <ignoreWhenIdentical>true</ignoreWhenIdentical>
+                        </banDuplicateClasses>
                     </rules>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>extra-enforcer-rules</artifactId>
+                        <version>1.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

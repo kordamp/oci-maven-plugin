@@ -26,6 +26,9 @@ import com.oracle.bmc.core.model.InternetGateway
 import com.oracle.bmc.core.model.Shape
 import com.oracle.bmc.core.model.Subnet
 import com.oracle.bmc.core.model.Vcn
+import com.oracle.bmc.core.requests.GetSubnetRequest
+import com.oracle.bmc.core.requests.GetVcnRequest
+import com.oracle.bmc.core.requests.ListSubnetsRequest
 import com.oracle.bmc.identity.IdentityClient
 import com.oracle.bmc.identity.model.AvailabilityDomain
 import com.oracle.bmc.identity.requests.ListAvailabilityDomainsRequest
@@ -36,7 +39,9 @@ import org.kordamp.maven.plugin.oci.mojos.AbstractOCIMojo
 import org.kordamp.maven.plugin.oci.mojos.traits.CompartmentIdAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.ImageAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.InstanceNameAwareTrait
+import org.kordamp.maven.plugin.oci.mojos.traits.OptionalAvailabilityDomainAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.OptionalDnsLabelAwareTrait
+import org.kordamp.maven.plugin.oci.mojos.traits.OptionalSubnetIdAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.OptionalUserDataFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.PublicKeyFileAwareTrait
 import org.kordamp.maven.plugin.oci.mojos.traits.ShapeAwareTrait
@@ -62,6 +67,8 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
     PublicKeyFileAwareTrait,
     OptionalUserDataFileAwareTrait,
     OptionalDnsLabelAwareTrait,
+    OptionalAvailabilityDomainAwareTrait,
+    OptionalSubnetIdAwareTrait,
     VerboseAwareTrait {
     @Override
     protected List<String> resolveInterpolationProperties() {
@@ -103,30 +110,61 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
         props.put('compartment.id', getCompartmentId())
 
         ComputeClient computeClient = createComputeClient()
-
-        Image _image = validateImage(computeClient, getCompartmentId())
-        Shape _shape = validateShape(computeClient, getCompartmentId())
-
-        String networkCidrBlock = '10.0.0.0/16'
-        File publicKeyFile = getPublicKeyFile()
-        File userDataFile = getUserDataFile()
-        String vcnDisplayName = getInstanceName() + '-vcn'
-        String dnsLabel = normalizeDnsLabel(isNotBlank(getDnsLabel()) ? getDnsLabel() : getInstanceName())
-        String internetGatewayDisplayName = getInstanceName() + '-internet-gateway'
-        String kmsKeyId = ''
-
         IdentityClient identityClient = createIdentityClient()
         VirtualNetworkClient vcnClient = createVirtualNetworkClient()
         BlockstorageClient blockstorageClient = createBlockstorageClient()
 
-        Vcn vcn = maybeCreateVcn(this,
-            vcnClient,
-            getCompartmentId(),
-            vcnDisplayName,
-            dnsLabel,
-            networkCidrBlock,
-            true,
-            isVerbose())
+        Image _image = validateImage(computeClient, getCompartmentId())
+        Shape _shape = validateShape(computeClient, getCompartmentId())
+
+        File publicKeyFile = getPublicKeyFile()
+        File userDataFile = getUserDataFile()
+        String internetGatewayDisplayName = getInstanceName() + '-internet-gateway'
+        String kmsKeyId = ''
+
+        AvailabilityDomain availabilityDomain = null
+        Subnet subnet = null
+        Vcn vcn = null
+
+        if (isNotBlank(getAvailabilityDomain())) {
+            for (AvailabilityDomain ad : identityClient.listAvailabilityDomains(ListAvailabilityDomainsRequest.builder()
+                .compartmentId(getCompartmentId())
+                .build()).items) {
+                if (ad.id == getAvailabilityDomain()) {
+                    availabilityDomain = ad
+                    break
+                }
+            }
+        } else if (isNotBlank(getSubnetId())) {
+            try {
+                subnet = vcnClient.getSubnet(GetSubnetRequest.builder()
+                    .subnetId(getSubnetId())
+                    .build())
+                    .subnet
+
+                vcn = vcnClient.getVcn(GetVcnRequest.builder()
+                    .vcnId(subnet.vcnId)
+                    .build())
+                    .vcn
+            } catch (Exception ignored) {
+                // ignored
+            }
+        }
+
+        if (!subnet) {
+            String networkCidrBlock = '10.0.0.0/16'
+            String vcnDisplayName = getInstanceName() + '-vcn'
+            String dnsLabel = normalizeDnsLabel(isNotBlank(getDnsLabel()) ? getDnsLabel() : getInstanceName())
+            vcn = maybeCreateVcn(this,
+                vcnClient,
+                getCompartmentId(),
+                vcnDisplayName,
+                dnsLabel,
+                networkCidrBlock,
+                true,
+                isVerbose())
+        }
+
         props.put('vcn.id', vcn.id)
         props.put('vcn.name', vcn.displayName)
         props.put('vcn.security-list.id', vcn.defaultSecurityListId)
@@ -141,32 +179,49 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
             isVerbose())
         props.put('internet-gateway.id', internetGateway.id)
 
-        Subnet subnet = null
-        int subnetIndex = 0
-        // create a Subnet per AvailabilityDomain
-        List<AvailabilityDomain> availabilityDomains = identityClient.listAvailabilityDomains(ListAvailabilityDomainsRequest.builder()
-            .compartmentId(getCompartmentId())
-            .build()).items
-        props.put('vcn.subnets', availabilityDomains.size().toString())
-        for (AvailabilityDomain domain : availabilityDomains) {
-            String subnetDnsLabel = 'sub' + HashUtil.sha1(vcn.id.bytes).asHexString()[0..8] + (subnetIndex.toString().padLeft(3, '0'))
+        if (!subnet) {
+            if (availabilityDomain) {
+                for (Subnet s : vcnClient.listSubnets(ListSubnetsRequest.builder()
+                    .compartmentId(getCompartmentId())
+                    .vcnId(vcn.id)
+                    .build()).items) {
+                    if (s.availabilityDomain == availabilityDomain.name) {
+                        subnet = s
+                        props.put('vcn.subnets', '1')
+                        props.put('subnet.0.id'.toString(), s.id)
+                        props.put('subnet.0.name'.toString(), s.displayName)
+                        break
+                    }
+                }
+            } else {
+                int subnetIndex = 0
+                // create a Subnet per AvailabilityDomain
+                List<AvailabilityDomain> availabilityDomains = identityClient.listAvailabilityDomains(ListAvailabilityDomainsRequest.builder()
+                    .compartmentId(getCompartmentId())
+                    .build()).items
+                props.put('vcn.subnets', availabilityDomains.size().toString())
+                for (AvailabilityDomain domain : availabilityDomains) {
+                    String subnetDnsLabel = 'sub' + HashUtil.sha1(vcn.id.bytes).asHexString()[0..8] + (subnetIndex.toString().padLeft(3, '0'))
 
-            Subnet s = maybeCreateSubnet(this,
-                vcnClient,
-                getCompartmentId(),
-                vcn.id,
-                subnetDnsLabel,
-                domain.name,
-                'Subnet ' + domain.name,
-                "10.0.${subnetIndex}.0/24".toString(),
-                true,
-                isVerbose())
-            props.put("subnet.${subnetIndex}.id".toString(), s.id)
-            props.put("subnet.${subnetIndex}.name".toString(), s.displayName)
+                    Subnet s = maybeCreateSubnet(this,
+                        vcnClient,
+                        getCompartmentId(),
+                        vcn.id,
+                        subnetDnsLabel,
+                        domain.name,
+                        'Subnet ' + domain.name,
+                        "10.0.${subnetIndex}.0/24".toString(),
+                        true,
+                        isVerbose())
+                    props.put("subnet.${subnetIndex}.id".toString(), s.id)
+                    props.put("subnet.${subnetIndex}.name".toString(), s.displayName)
 
-            // save the first one
-            if (subnet == null) subnet = s
-            subnetIndex++
+                    // save the first one
+                    if (subnet == null) subnet = s
+                    if (availabilityDomain == null) availabilityDomain = domain
+                    subnetIndex++
+                }
+            }
         }
 
         Instance instance = maybeCreateInstance(this,
@@ -178,6 +233,7 @@ class SetupInstanceMojo extends AbstractOCIMojo implements CompartmentIdAwareTra
             getInstanceName(),
             _image,
             _shape,
+            availabilityDomain,
             subnet,
             publicKeyFile,
             userDataFile,
