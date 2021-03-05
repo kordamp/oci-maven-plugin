@@ -1,13 +1,13 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2019-2020 Andres Almiray.
+ * Copyright 2019-2021 Andres Almiray.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,12 +20,14 @@ package org.kordamp.maven.plugin.oci.mojos
 import com.google.common.base.Supplier
 import com.oracle.bmc.ConfigFileReader
 import com.oracle.bmc.Region
+import com.oracle.bmc.apigateway.GatewayClient
 import com.oracle.bmc.auth.AuthenticationDetailsProvider
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider
 import com.oracle.bmc.auth.SimpleAuthenticationDetailsProvider
 import com.oracle.bmc.core.BlockstorageClient
 import com.oracle.bmc.core.ComputeClient
 import com.oracle.bmc.core.VirtualNetworkClient
+import com.oracle.bmc.database.DatabaseClient
 import com.oracle.bmc.identity.IdentityClient
 import com.oracle.bmc.objectstorage.ObjectStorageAsyncClient
 import com.oracle.bmc.objectstorage.ObjectStorageClient
@@ -351,6 +353,24 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
 
     protected ObjectStorageAsyncClient createObjectStorageAsyncClient() {
         ObjectStorageAsyncClient client = new ObjectStorageAsyncClient(resolveAuthenticationDetailsProvider())
+        if (isNotBlank(getRegion())) {
+            client.setRegion(getRegion())
+        }
+        closeables << client
+        client
+    }
+
+    protected DatabaseClient createDatabaseClient() {
+        DatabaseClient client = new DatabaseClient(resolveAuthenticationDetailsProvider())
+        if (isNotBlank(getRegion())) {
+            client.setRegion(getRegion())
+        }
+        closeables << client
+        client
+    }
+
+    protected GatewayClient createGatewayClient() {
+        GatewayClient client = new GatewayClient(resolveAuthenticationDetailsProvider())
         if (isNotBlank(getRegion())) {
             client.setRegion(getRegion())
         }

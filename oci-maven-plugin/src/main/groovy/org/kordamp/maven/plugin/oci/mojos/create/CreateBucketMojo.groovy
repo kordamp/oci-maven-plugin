@@ -1,13 +1,13 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2019-2020 Andres Almiray.
+ * Copyright 2019-2021 Andres Almiray.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,11 +21,9 @@ import com.oracle.bmc.model.BmcException
 import com.oracle.bmc.objectstorage.ObjectStorage
 import com.oracle.bmc.objectstorage.ObjectStorageClient
 import com.oracle.bmc.objectstorage.model.Bucket
-import com.oracle.bmc.objectstorage.model.BucketSummary
 import com.oracle.bmc.objectstorage.model.CreateBucketDetails
 import com.oracle.bmc.objectstorage.requests.CreateBucketRequest
 import com.oracle.bmc.objectstorage.requests.GetBucketRequest
-import com.oracle.bmc.objectstorage.requests.ListBucketsRequest
 import groovy.transform.CompileStatic
 import org.apache.maven.plugins.annotations.Mojo
 import org.kordamp.maven.plugin.oci.mojos.AbstractOCIMojo

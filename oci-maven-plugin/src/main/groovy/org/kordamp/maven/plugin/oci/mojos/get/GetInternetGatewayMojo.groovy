@@ -1,13 +1,13 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2019-2020 Andres Almiray.
+ * Copyright 2019-2021 Andres Almiray.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ import static org.kordamp.maven.plugin.oci.mojos.printers.InternetGatewayPrinter
  * @since 0.1.0
  */
 @CompileStatic
-@Mojo(name = 'get-get-internet-gateway')
+@Mojo(name = 'get-internet-gateway')
 class GetInternetGatewayMojo extends AbstractOCIMojo implements InternetGatewayIdAwareTrait {
     @Override
     protected List<String> resolveInterpolationProperties() {
