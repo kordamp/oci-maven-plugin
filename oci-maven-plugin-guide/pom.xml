@@ -38,7 +38,7 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <oci.sdk.version>1.33.0</oci.sdk.version>
+        <oci.sdk.version>2.7.1</oci.sdk.version>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <maven.source.skip>true</maven.source.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
@@ -47,7 +47,7 @@
 
     <name>oci-maven-plugin-guide</name>
     <description>Guide for OCI Java SDK Maven Plugin</description>
-    <url>https://github.com/aalmiray/oci-maven-plugin</url>
+    <url>https://github.com/kordamp/oci-maven-plugin</url>
     <inceptionYear>2019</inceptionYear>
 
     <scm>
