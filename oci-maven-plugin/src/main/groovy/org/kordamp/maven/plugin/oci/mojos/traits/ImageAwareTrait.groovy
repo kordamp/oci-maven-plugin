@@ -51,6 +51,7 @@ trait ImageAwareTrait implements PathAware, ExecutionIdAware {
     Image validateImage(ComputeClient client, String compartmentId) {
         ListImagesResponse response = client.listImages(ListImagesRequest.builder()
             .compartmentId(compartmentId)
+            .displayName(getImage())
             .build())
         Image image = response.items.find { Image img -> img.displayName == getImage() }
         if (!image) throw new IllegalStateException("Invalid image ${getImage()}")
