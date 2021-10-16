@@ -1,0 +1,55 @@
+name: "Early Access"
+
+on: [push]
+
+jobs:
+  earlyaccess:
+    name: "Early Access"
+    if: github.repository == 'kordamp/oci-maven-plugin' && github.ref == 'refs/heads/master' && startsWith(github.event.head_commit.message, 'Releasing version') != true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Cache Maven
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          distribution: 'zulu'
+
+      - name: Build
+        run: ./mvnw --no-transfer-progress -B --file oci-maven-plugin/pom.xml verify
+
+      - name: Version
+        id: vars
+        run: echo ::set-output name=version::$(cat VERSION)
+
+      - name: Release
+        uses: jreleaser/release-action@v1
+        with:
+          version: early-access
+        env:
+          JRELEASER_PROJECT_VERSION: ${{ steps.vars.outputs.version }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN }}
+          JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.GPG_PUBLIC_KEY }}
+          JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_SECRET_KEY }}
+
+      - name: JReleaser output
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: |
+            out/jreleaser/trace.log
+            out/jreleaser/output.properties
