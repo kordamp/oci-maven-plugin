@@ -62,18 +62,16 @@ jobs:
             -Drepository.url=https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
             -Dmaven.site.skip=true -Drelease=true deploy
 
-      - name: Build site
+      - name: Build guide
         run: |
           export GPG_TTY=$(tty)
-          ./mvnw --no-transfer-progress -B --file oci-maven-plugin-guide/pom.xml \
-          -Drepository.url=https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
-          site site:stage -DstagingDirectory="${{ runner.temp }}/site"
+          ./mvnw --no-transfer-progress -B --file oci-maven-plugin-guide/pom.xml generate-resources
 
-      - name: Publish site
+      - name: Publish guide
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
           branch: gh-pages
-          folder: "${{ runner.temp }}/site"
+          folder: oci-maven-plugin-guide/target/generated-docs
 
       - name: Set up Java 11
         uses: actions/setup-java@v2
