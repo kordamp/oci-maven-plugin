@@ -45,6 +45,7 @@ jobs:
           ./mvnw -B versions:set -DnewVersion=$VERSION -f oci-maven-plugin-guide/pom.xml
           ./mvnw -B versions:commit
           echo $VERSION > VERSION
+          sed -i -e "s/^\:project-version\:\ .*/:project-version: ${VERSION}/g" README.adoc
           git config --global user.email "kordamp-release-bot@kordamp.org"
           git config --global user.name "kordamp-release-bot"
           git commit -a -m "Releasing version $VERSION"
