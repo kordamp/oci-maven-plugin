@@ -61,7 +61,10 @@ jobs:
         run: |
           VERSION=${{ github.event.inputs.version }}
           echo "Updating POMs to version $VERSION"
-          ./mvnw -B versions:set versions:commit -DnewVersion=$VERSION
+          ./mvnw -B versions:set -DnewVersion=$VERSION -f pom.xml
+          ./mvnw -B versions:set -DnewVersion=$VERSION -f oci-maven-plugin/pom.xml
+          ./mvnw -B versions:set -DnewVersion=$VERSION -f oci-maven-plugin-guide/pom.xml
+          ./mvnw -B versions:commit
           echo $VERSION > VERSION
           git config --global user.email "kordamp-release-bot@kordamp.org"
           git config --global user.name "kordamp-release-bot"
