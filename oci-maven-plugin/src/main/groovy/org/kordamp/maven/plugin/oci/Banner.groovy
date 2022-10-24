@@ -40,22 +40,14 @@ final class Banner {
     private static final Banner b = new Banner()
 
     private Banner() {
-        // nooop
+        // noop
     }
 
     static void display(MavenProject project, Log log) {
-        MavenProject element = project
-        MavenProject root = project
-        while (true) {
-            if (element.parent == null || element.parent == element) {
-                break
-            }
-            root = element.parent
-        }
-        if (b.visited.contains(root.name)) {
+        if (b.visited.contains(project.name)) {
             return
         }
-        b.visited.add(root.name)
+        b.visited.add(project.name)
 
         File parent = new File(System.getProperty('user.home'), '/.m2/caches')
         File markerFile = b.getMarkerFile(parent)
