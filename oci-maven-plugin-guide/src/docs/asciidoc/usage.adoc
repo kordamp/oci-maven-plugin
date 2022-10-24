@@ -78,6 +78,7 @@ All mojos share the following properties
 | profile     | String  | oci.profile | OCI_PROFILE | DEFAULT | icon:times[role="red"]
 | region      | String  | oci.region  | OCI_REGION  |         | icon:times[role="red"]
 | showSecrets | boolean |             |             | false   | icon:times[role="red"]
+| skip        | boolean |             |             | false   | icon:times[role="red"]
 |===
 
 Where each column defines

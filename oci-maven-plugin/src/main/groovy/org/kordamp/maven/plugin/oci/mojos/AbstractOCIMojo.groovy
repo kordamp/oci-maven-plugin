@@ -85,6 +85,9 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
     @Parameter(property = 'oci.input.properties')
     private File inputProperties
 
+    @Parameter
+    private boolean skip
+
     private final Properties _inputProperties = new Properties()
 
     String getProfile() {
@@ -116,6 +119,11 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
     }
 
     final void execute() {
+        if (skip) {
+            log.info('Execution skipped"')
+            return
+        }
+
         Banner.display(project, getLog())
         System.setProperty('sun.net.http.allowRestrictedHeaders', 'true')
 
