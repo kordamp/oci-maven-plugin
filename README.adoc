@@ -3,7 +3,7 @@
 :project-owner:   kordamp
 :project-name:    oci-maven-plugin
 :project-group:   org.kordamp.maven
-:project-version: 0.5.0
+:project-version: 0.5.1
 
 :project-name: oci-maven-plugin
 :project-group: org.kordamp.maven
