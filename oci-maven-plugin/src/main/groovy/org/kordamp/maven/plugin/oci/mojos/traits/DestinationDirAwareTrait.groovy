@@ -30,7 +30,7 @@ import static org.kordamp.maven.PropertyUtils.directoryProperty
  */
 @CompileStatic
 trait DestinationDirAwareTrait implements PathAware, ExecutionIdAware {
-    @Parameter(property = 'oci.destination.dir', name = 'destinationdir')
+    @Parameter(property = 'oci.destination.dir', name = 'destinationDir')
     File destinationDir
 
     File getDestinationDir() {
