@@ -43,3 +43,4 @@ release:
 announce:
   twitter:
     active: release
+    status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}
