@@ -41,6 +41,7 @@ import org.kordamp.maven.plugin.oci.mojos.interfaces.OCIMojo
 
 import java.text.SimpleDateFormat
 
+import static org.kordamp.maven.PropertyUtils.booleanProperty
 import static org.kordamp.maven.PropertyUtils.fileProperty
 import static org.kordamp.maven.PropertyUtils.stringProperty
 import static org.kordamp.maven.StringUtils.isBlank
@@ -85,6 +86,9 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
     @Parameter(property = 'oci.input.properties')
     private File inputProperties
 
+    @Parameter(property = 'oci.display.stream.logs')
+    private boolean displayStreamLogs
+
     @Parameter
     private boolean skip
 
@@ -118,6 +122,10 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
         fileProperty(this, 'OCI_KEYFILE', 'oci.keyfile', this.@keyfile)
     }
 
+    boolean isDisplayStreamLogs() {
+        booleanProperty(this, 'OCI_DISPLAY_STREAM_LOGS', 'oci.display.stream.logs', this.@displayStreamLogs)
+    }
+
     final void execute() {
         if (skip) {
             log.info('Execution skipped"')
@@ -126,6 +134,7 @@ abstract class AbstractOCIMojo extends AbstractReportingMojo implements OCIMojo 
 
         Banner.display(project, getLog())
         System.setProperty('sun.net.http.allowRestrictedHeaders', 'true')
+        System.setProperty('oci.javasdk.extra.stream.logs.enabled', isDisplayStreamLogs().toString())
 
         loadProperties()
         interpolateProperties()

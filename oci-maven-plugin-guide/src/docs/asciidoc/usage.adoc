@@ -74,11 +74,12 @@ All mojos share the following properties
 
 [options="header", cols="5*<,^"]
 |===
-| Property    | Type    | System      | Environment | Default | Required
-| profile     | String  | oci.profile | OCI_PROFILE | DEFAULT | icon:times[role="red"]
-| region      | String  | oci.region  | OCI_REGION  |         | icon:times[role="red"]
-| showSecrets | boolean |             |             | false   | icon:times[role="red"]
-| skip        | boolean |             |             | false   | icon:times[role="red"]
+| Property          | Type    | System                  | Environment             | Default | Required
+| profile           | String  | oci.profile             | OCI_PROFILE             | DEFAULT | icon:times[role="red"]
+| region            | String  | oci.region              | OCI_REGION              |         | icon:times[role="red"]
+| showSecrets       | boolean |                         |                         | false   | icon:times[role="red"]
+| skip              | boolean |                         |                         | false   | icon:times[role="red"]
+| displayStreamLogs | boolean | oci.display.stream.logs | OCI_DISPLAY_STREAM_LOGS | false   | icon:times[role="red"]
 |===
 
 Where each column defines
