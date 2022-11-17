@@ -17,7 +17,6 @@
  */
 package org.kordamp.maven.plugin.oci.mojos
 
-import com.google.common.base.Supplier
 import com.oracle.bmc.ConfigFileReader
 import com.oracle.bmc.Region
 import com.oracle.bmc.apigateway.GatewayClient
@@ -40,6 +39,7 @@ import org.kordamp.maven.plugin.oci.Banner
 import org.kordamp.maven.plugin.oci.mojos.interfaces.OCIMojo
 
 import java.text.SimpleDateFormat
+import java.util.function.Supplier
 
 import static org.kordamp.maven.PropertyUtils.booleanProperty
 import static org.kordamp.maven.PropertyUtils.fileProperty
