@@ -129,6 +129,11 @@
                 <artifactId>jakarta.activation-api</artifactId>
                 <version>1.2.2</version>
             </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.15</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -294,6 +299,10 @@
         <dependency>
             <groupId>com.oracle.oci.sdk</groupId>
             <artifactId>oci-java-sdk-workrequests</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.oci.sdk</groupId>
+            <artifactId>oci-java-sdk-common-httpclient-jersey</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
