@@ -41,6 +41,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <oci.sdk.version>3.0.1</oci.sdk.version>
         <jackson.version>2.14.0</jackson.version>
+        <jakarta.xml.bind.api.version>2.3.3</jakarta.xml.bind.api.version>
+        <slf4j.version>2.0.3</slf4j.version>
         <groovy.version>3.0.7</groovy.version>
         <product.version>${project.version}</product.version>
         <product.id>oci-maven</product.id>
@@ -100,7 +102,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>2.0.3</version>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
@@ -134,6 +136,11 @@
                 <artifactId>commons-codec</artifactId>
                 <version>1.15</version>
             </dependency>
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>${jakarta.xml.bind.api.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -157,7 +164,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.3</version>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>${jakarta.xml.bind.api.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
