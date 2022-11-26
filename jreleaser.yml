@@ -38,11 +38,26 @@ release:
       replacers:
         - search: 'deps: '
 
+signing:
+  active: RELEASE
+  armored: true
+
+deploy:
+  maven:
+    nexus2:
+      maven-central:
+        active: RELEASE
+        url: https://s01.oss.sonatype.org/service/local
+        closeRepository: true
+        releaseRepository: true
+        stagingRepositories:
+          - oci-maven-plugin/target/staging-deploy
+
 announce:
   twitter:
-    active: release
+    active: RELEASE
     status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}
   mastodon:
-    active: release
+    active: RELEASE
     host: https://mastodon.social
     status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}

@@ -34,11 +34,6 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRO }}
-          server-id: central
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_CENTRAL_TOKEN
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       - name: Update version
         run: |
@@ -55,30 +50,12 @@ jobs:
           git commit -a -m "Releasing version $VERSION"
           git push origin master
 
-      - name: Release
-        env:
-          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Stage deploy
         run: |
-          export GPG_TTY=$(tty)
-          ./mvnw -ntp -B --file oci-maven-plugin/pom.xml \
-            -Drepository.url=https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git \
-            -Dmaven.site.skip=true -Drelease=true deploy
-
-      - name: Build guide
-        run: |
-          export GPG_TTY=$(tty)
-          ./mvnw -ntp -B --file oci-maven-plugin-guide/pom.xml generate-resources
-
-      - name: Publish guide
-        uses: JamesIves/github-pages-deploy-action@4.0.0
-        with:
-          branch: gh-pages
-          folder: oci-maven-plugin-guide/target/generated-docs
+          ./mvnw -ntp -B --file oci-maven-plugin/pom.xml -Ppublication deploy -DaltDeploymentRepository=local::file:oci-maven-plugin/target/staging-deploy
 
       - name: Release
-        uses: jreleaser/release-action@v1
+        uses: jreleaser/release-action@v2
         env:
           JRELEASER_PROJECT_VERSION: ${{ github.event.inputs.version }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN }}
@@ -91,6 +68,9 @@ jobs:
           JRELEASER_TWITTER_CONSUMER_SECRET: ${{ secrets.TWITTER_CONSUMER_SECRET }}
           JRELEASER_TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
           JRELEASER_TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+          JRELEASER_MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          JRELEASER_NEXUS2_MAVEN_CENTRAL_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          JRELEASER_NEXUS2_MAVEN_CENTRAL_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
 
       - name: JReleaser output
         if: always()
@@ -100,3 +80,14 @@ jobs:
           path: |
             out/jreleaser/trace.log
             out/jreleaser/output.properties
+
+      - name: Build guide
+        run: |
+          export GPG_TTY=$(tty)
+          ./mvnw -ntp -B --file oci-maven-plugin-guide/pom.xml generate-resources
+
+      - name: Publish guide
+        uses: JamesIves/github-pages-deploy-action@4.0.0
+        with:
+          branch: gh-pages
+          folder: oci-maven-plugin-guide/target/generated-docs
