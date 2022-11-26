@@ -43,7 +43,7 @@ jobs:
           echo "VERSION=$(cat VERSION)" >> $GITHUB_OUTPUT
 
       - name: Release
-        uses: jreleaser/release-action@v1
+        uses: jreleaser/release-action@v2
         env:
           JRELEASER_PROJECT_VERSION: ${{ steps.vars.outputs.version }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GIT_ACCESS_TOKEN }}

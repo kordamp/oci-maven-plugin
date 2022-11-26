@@ -7,6 +7,10 @@ project:
     - Andres Almiray
   license: Apache-2.0
   inceptionYear: 2019
+  java:
+    groupId: org.kordamp.maven
+    artifactId: oci-maven-plugin
+    version: 1.8
 
 release:
   github:
