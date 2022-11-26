@@ -1,8 +1,6 @@
 project:
   name: oci-maven-plugin
   description: A Maven plugin for the Java SDK for Oracle Cloud Infrastructure
-  longDescription: |
-    A Maven plugin for the Java SDK for Oracle Cloud Infrastructure
   links:
     homepage: https://github.com/kordamp/oci-maven-plugin/
   authors:
@@ -43,4 +41,8 @@ release:
 announce:
   twitter:
     active: release
+    status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}
+  mastodon:
+    active: release
+    host: https://mastodon.social
     status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}
