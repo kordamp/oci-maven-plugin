@@ -5,10 +5,8 @@
 :project-group:   org.kordamp.maven
 :project-version: 0.8.0
 
-:project-name: oci-maven-plugin
-:project-group: org.kordamp.maven
 image:https://img.shields.io/badge/license-ASL2-blue.svg["ASL2 Licensed", link="https://spdx.org/licenses/Apache-2.0.html"]
-image:https://github.com/{project-owner}/{project-name}/workflows/Early%20Access/badge.svg["Build Status", link="https://github.com/{project-owner}/{project-name}/actions"]
+image:http://img.shields.io/github/actions/workflow/status/{project-owner}/{project-name}/early-access.yml?branch=master&logo=github&label=Build["Build Status", link="https://github.com/{project-owner}/{project-name}/actions"]
 image:https://img.shields.io/maven-central/v/{project-group}/{project-name}.svg?label=maven[link="https://search.maven.org/#search|ga|1|{project-group}"]
 
 ---
